@@ -30,8 +30,18 @@ public class Person4 {
      * @return the modified string
      */
     private String calc(String input) {
-      //Person 4 put your implementation here
-      return null;
+        int length = input.length();
+        String modstring = "";
+
+        for (int i=0; i<length;i++) {
+
+            char var = input.charAt(i);
+            var = var + 1;
+            modstring = modstring + var;
+
+        }
+
+        return modstring;
     }
     
     /**
@@ -47,4 +57,3 @@ public class Person4 {
     }
 
 }
-

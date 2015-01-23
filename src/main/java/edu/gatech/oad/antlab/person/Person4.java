@@ -36,24 +36,23 @@ public class Person4 {
         for (int i=0; i<length;i++) {
 
             char var = input.charAt(i);
-            var = var + 1;
+            int value = (int)var + 1;
+            var = (char)value;
             modstring = modstring + var;
-
         }
 
         return modstring;
     }
-    
+
     /**
      * Return a string rep of this object
      * that varies with an input string
      *
      * @param input the varying string
-     * @return the string representing the 
+     * @return the string representing the
      *         object
      */
     public String toString(String input) {
       return name + calc(input);
     }
-
 }

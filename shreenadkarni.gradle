@@ -1,0 +1,20 @@
+apply plugin: 'java'
+defaultTasks  'jar'
+
+jar {
+    baseName = 'shreenadkarni'
+    version = '1.0.'
+    manifest {
+        attributes 'Implementation-Title': 'Gradle Quickstart', 'Implementation-Version': 1.0 ,
+        'Main-Class' : 'edu.gatech.oad.antlab.pkg1.AntLabMain', 'Class-Path' : '../../lib/resources.jar'
+    }
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+dependencies {
+    compile files('lib/resources.jar')
+}

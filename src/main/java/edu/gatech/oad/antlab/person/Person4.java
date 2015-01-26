@@ -37,9 +37,15 @@ public class Person4 {
 
             char var = input.charAt(i);
 <<<<<<< HEAD
+<<<<<<< HEAD
             var = var + 1;
             modstring = modstring + var;
 
+=======
+            int value = (int)var + 1;
+            var = (char)value;
+            modstring = modstring + var;
+>>>>>>> FETCH_HEAD
 =======
             int value = (int)var + 1;
             var = (char)value;

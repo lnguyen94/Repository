@@ -1,0 +1,6 @@
+/Users/samford/Dropbox/Georgia Tech/CS 2340/Repository/ShoppingWIthFriends/app/build/intermediates/classes/debug
+/Users/samford/Dropbox/Georgia Tech/CS 2340/Repository/ShoppingWIthFriends/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.3-8880311ad40ac42fd087da43c5aae7e406c089cf.jar
+/Users/samford/Dropbox/Georgia Tech/CS 2340/Repository/ShoppingWIthFriends/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-f20294992821b574c5e8bdb211d3763afe44b6b7.jar
+/Users/samford/Dropbox/Georgia Tech/CS 2340/Repository/ShoppingWIthFriends/app/build/intermediates/pre-dexed/debug/classes-bf8482c072768b487dff7356071c06155aa48ecb.jar
+/Users/samford/Dropbox/Georgia Tech/CS 2340/Repository/ShoppingWIthFriends/app/build/intermediates/pre-dexed/debug/classes-341d9c1bb574255c050b6d6893fe481453715ac4.jar
+/Users/samford/Dropbox/Georgia Tech/CS 2340/Repository/ShoppingWIthFriends/app/build/intermediates/pre-dexed/debug/classes-78ca8b37b51c751008f8e60eb69d7f8942099903.jar

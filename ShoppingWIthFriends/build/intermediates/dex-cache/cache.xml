@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="/Users/samford/Dropbox/Georgia Tech/CS 2340/Repository/ShoppingWIthFriends/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/libs/internal_impl-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="01ec05bfbafcc07646ba813000bf2ef11742dd03">
+        <dex dex="/Users/samford/Dropbox/Georgia Tech/CS 2340/Repository/ShoppingWIthFriends/app/build/intermediates/pre-dexed/debug/internal_impl-21.0.3-f20294992821b574c5e8bdb211d3763afe44b6b7.jar" />
+    </item>
+    <item
+        jar="/Users/samford/Dropbox/Georgia Tech/CS 2340/Repository/ShoppingWIthFriends/app/build/intermediates/exploded-aar/com.android.support/support-v4/21.0.3/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="2c91c949a45a21cdecf26e03951e46c7beec9ad8">
+        <dex dex="/Users/samford/Dropbox/Georgia Tech/CS 2340/Repository/ShoppingWIthFriends/app/build/intermediates/pre-dexed/debug/classes-341d9c1bb574255c050b6d6893fe481453715ac4.jar" />
+    </item>
+    <item
+        jar="/Users/samford/Dropbox/Georgia Tech/CS 2340/Repository/ShoppingWIthFriends/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/21.0.3/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="81d42bf983a8741f4888a6e333e454e4a5e0eeb7">
+        <dex dex="/Users/samford/Dropbox/Georgia Tech/CS 2340/Repository/ShoppingWIthFriends/app/build/intermediates/pre-dexed/debug/classes-bf8482c072768b487dff7356071c06155aa48ecb.jar" />
+    </item>
+    <item
+        jar="/Users/samford/Dropbox/Georgia Tech/CS 2340/Repository/ShoppingWIthFriends/app/build/intermediates/exploded-aar/com.google.android.gms/play-services/6.5.87/classes.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="dd9247ea0fabe8ee479638c4b4a23e93752be256">
+        <dex dex="/Users/samford/Dropbox/Georgia Tech/CS 2340/Repository/ShoppingWIthFriends/app/build/intermediates/pre-dexed/debug/classes-78ca8b37b51c751008f8e60eb69d7f8942099903.jar" />
+    </item>
+    <item
+        jar="/Users/samford/Downloads/adt-bundle-mac-x86_64-20140321/sdk/extras/android/m2repository/com/android/support/support-annotations/21.0.3/support-annotations-21.0.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="4b74cefe1f0c1b819e7260c8627a14674e37fd35">
+        <dex dex="/Users/samford/Dropbox/Georgia Tech/CS 2340/Repository/ShoppingWIthFriends/app/build/intermediates/pre-dexed/debug/support-annotations-21.0.3-8880311ad40ac42fd087da43c5aae7e406c089cf.jar" />
+    </item>
+
+</items>

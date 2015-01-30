@@ -273,11 +273,12 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
-                mEmail = "";
-                mPassword = "";
                 if (pieces[0].equals(mEmail)) {
                     // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
+                    boolean b =  pieces[1].equals(mPassword);
+                    mEmail = "";
+                    mPassword = "";
+                    return b;
                 }
             }
 

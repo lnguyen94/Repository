@@ -1,0 +1,6 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:id="@+id/container"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    tools:context="com.example.samford.shoppingwithfriends.LoggedInActivity"
+    tools:ignore="MergeRootFrame" />
+<!-- From: file:/Users/samford/Dropbox/Georgia%20Tech/CS%202340/Repository/ShoppingWIthFriends/app/src/main/res/layout/activity_logged_in.xml -->

@@ -252,8 +252,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
-        private final String mEmail;
-        private final String mPassword;
+        private String mEmail;
+        private String mPassword;
 
         UserLoginTask(String email, String password) {
             mEmail = email;
@@ -273,6 +273,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
             for (String credential : DUMMY_CREDENTIALS) {
                 String[] pieces = credential.split(":");
+                mEmail = "";
+                mPassword = "";
                 if (pieces[0].equals(mEmail)) {
                     // Account exists, return true if the password matches.
                     return pieces[1].equals(mPassword);

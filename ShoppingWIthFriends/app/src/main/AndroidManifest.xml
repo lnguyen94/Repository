@@ -25,6 +25,14 @@
             android:name=".LoggedInActivity"
             android:label="@string/title_activity_logged_in" >
         </activity>
+        <activity
+            android:name=".RegistrationActivity"
+            android:label="@string/title_activity_registration" >
+        </activity>
+        <activity
+            android:name=".NewLoginActivity"
+            android:label="@string/title_activity_new_login" >
+        </activity>
     </application>
 
 </manifest>

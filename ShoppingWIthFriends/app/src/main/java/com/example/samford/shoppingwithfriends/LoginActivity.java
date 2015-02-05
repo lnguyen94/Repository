@@ -17,6 +17,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -25,6 +26,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -40,19 +42,32 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
      * A dummy authentication store containing known user names and passwords.
      * TODO: remove after connecting to a real authentication system.
      */
-    private static final String[] DUMMY_CREDENTIALS = new String[]{
+    public static ArrayList<User> users = new ArrayList<>();
+    public String[] DUMMY_CREDENTIALS = new String[] {
             "user:pass"
     };
+
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
 
     // UI references.
+    private EditText mNameView;
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
+    Button mEmailSignInButton;
+
+
+    /**
+     * returns to the welcome screen on cancel
+     * @param v
+     */
+    public void cancelClick(View v){
+        startActivity(new Intent(this, WelcomeActivity.class));
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +77,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
         populateAutoComplete();
+
+        mNameView = (EditText) findViewById(R.id.name);
 
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -75,11 +92,30 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
+        mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
+            }
+        });
+
+        final Button registerExpand = (Button) findViewById(R.id.expand_register_button);
+        registerExpand.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LinearLayout l = (LinearLayout) findViewById(R.id.register_layout);
+                l.setVisibility(View.VISIBLE);
+                registerExpand.setVisibility(View.GONE);
+
+                //change name to register
+                TextView t = (TextView) findViewById(R.id.title);
+                t.setText("Register");
+                Log.wtf("asdf", t.getText().toString());
+
+                mEmailSignInButton.setText("Register");
+
+
             }
         });
 
@@ -103,34 +139,36 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         }
 
         // Reset errors.
+        mNameView.setError(null);
         mEmailView.setError(null);
         mPasswordView.setError(null);
 
         // Store values at the time of the login attempt.
         String email = mEmailView.getText().toString();
         String password = mPasswordView.getText().toString();
+        String name = mNameView.getText().toString();
 
         boolean cancel = false;
         View focusView = null;
 
 
         // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordView;
-            cancel = true;
-        }
+//        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
+//            mPasswordView.setError(getString(R.string.error_invalid_password));
+//            focusView = mPasswordView;
+//            cancel = true;
+//        }
 
         // Check for a valid email address.
-        if (TextUtils.isEmpty(email)) {
-            mEmailView.setError(getString(R.string.error_field_required));
-            focusView = mEmailView;
-            cancel = true;
-        } else if (!isEmailValid(email)) {
-            mEmailView.setError(getString(R.string.error_invalid_email));
-            focusView = mEmailView;
-            cancel = true;
-        }
+//        if (TextUtils.isEmpty(email)) {
+//            mEmailView.setError(getString(R.string.error_field_required));
+//            focusView = mEmailView;
+//            cancel = true;
+//        } else if (!isEmailValid(email)) {
+//            mEmailView.setError(getString(R.string.error_invalid_email));
+//            focusView = mEmailView;
+//            cancel = true;
+//        }
 
         if (cancel) {
             // There was an error; don't attempt login and focus the first
@@ -140,9 +178,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mAuthTask = new UserLoginTask(email, password);
+            mAuthTask = new UserLoginTask(name, email, password);
             mAuthTask.execute((Void) null);
-//            startActivity(new Intent(LoginActivity.this, LoggedInActivity.class));
         }
     }
 
@@ -252,10 +289,17 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
 
+        private String mName;
         private String mEmail;
         private String mPassword;
 
         UserLoginTask(String email, String password) {
+            mEmail = email;
+            mPassword = password;
+        }
+
+        UserLoginTask(String name, String email, String password) {
+            mName = name;
             mEmail = email;
             mPassword = password;
         }
@@ -271,19 +315,48 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 return false;
             }
 
-            for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    boolean b =  pieces[1].equals(mPassword);
-                    mEmail = "";
-                    mPassword = "";
-                    return b;
+//            for (String credential : DUMMY_CREDENTIALS) {
+//                String[] pieces = credential.split(":");
+//                if (pieces[0].equals(mEmail)) {
+//                    // Account exists, return true if the password matches.
+//                    boolean b =  pieces[1].equals(mPassword);
+//                    mEmail = "";
+//                    mPassword = "";
+//                    return b;
+//                }
+//            }
+            User loginUser = new User(mName, mEmail, mPassword);
+//            for (User u : users) {
+//                Log.wtf("asdf", "outside user in users: " + loginUser.name + " - " + loginUser.username + " - " + loginUser.password);
+//            }
+//            Log.wtf("asdf", "loginUser: " + loginUser.name + " - " + loginUser.username + " - " + loginUser.password);
+//            for (User u : users) {
+////                if (u.equals(loginUser)) {
+//                Boolean us = loginUser.username.equals(u.username);
+//                Boolean pa = loginUser.password.equals(u.password);
+//                Log.wtf("username", us.toString());
+//                Log.wtf("password", pa.toString());
+//                if (((loginUser.username).equals(u.username) && (loginUser.password).equals(u.password))) {
+//                    Log.wtf("asdf", "user already in system");
+//                    return true; //already in system
+//                }
+//            }
+            if (users.contains(loginUser)) { //checks email and password
+                Log.wtf("adsf", "already in system");
+                return true; //user is already in the system - will log in
+            }
+            else if (!loginUser.name.equals("")) { //name field is populated - want to register
+                loginUser.name = mName;
+                users.add(loginUser);
+                for (User u : users) {
+                    Log.wtf("asdf", "elseif user in users: " + loginUser.name + " - " + loginUser.username + " - " + loginUser.password);
                 }
+                Log.d("adsf", "added to array");
+                return true; //registers user and signs in
+            } else { //some kind of error
+                return false;
             }
 
-            // TODO: register the new account here.
-            return false;
         }
 
         @Override
@@ -293,12 +366,16 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
 
             if (success) {
-
                 startActivity(new Intent(LoginActivity.this, LoggedInActivity.class));
 //                finish();
             } else {
-                mPasswordView.setError(getString(R.string.error_incorrect_password));
-                mPasswordView.requestFocus();
+//                mPasswordView.setError(getString(R.string.error_incorrect_password));
+//                mPasswordView.requestFocus();
+                startActivity(new Intent(LoginActivity.this, LoginActivity.class));
+//                onCreate(new Bundle());
+
+//                finish();
+
             }
         }
 
@@ -308,6 +385,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             showProgress(false);
         }
     }
+
+
 }
 
 

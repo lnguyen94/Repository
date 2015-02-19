@@ -14,7 +14,10 @@ import android.content.Intent;
 
 
 public class WelcomeActivity extends ActionBarActivity {
-
+    /**
+     * proceeds to the login screen
+     * @param v
+     */
     public void loginClick(View v){
         startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
 
@@ -22,6 +25,9 @@ public class WelcomeActivity extends ActionBarActivity {
     }
 
     @Override
+    /**
+     * creates the welcome activity
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
@@ -34,6 +40,9 @@ public class WelcomeActivity extends ActionBarActivity {
 
 
     @Override
+    /**
+     * creates the menus
+     */
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_welcome, menu);
@@ -41,6 +50,9 @@ public class WelcomeActivity extends ActionBarActivity {
     }
 
     @Override
+    /**
+     * handles menu item selection
+     */
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -64,6 +76,9 @@ public class WelcomeActivity extends ActionBarActivity {
         }
 
         @Override
+        /**
+         * handles when the fragment is created
+         */
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_welcome, container, false);

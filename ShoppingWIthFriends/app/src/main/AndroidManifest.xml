@@ -33,6 +33,14 @@
             android:name=".NewLoginActivity"
             android:label="@string/title_activity_new_login" >
         </activity>
+        <activity
+            android:name=".AddFriendActivity"
+            android:label="@string/title_activity_add_friend" >
+        </activity>
+        <activity
+            android:name=".FriendListActivity"
+            android:label="@string/title_activity_friend_list" >
+        </activity>
     </application>
 
 </manifest>

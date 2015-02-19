@@ -43,14 +43,14 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
      * TODO: remove after connecting to a real authentication system.
      */
     public static ArrayList<User> users = new ArrayList<>();
-    public String[] DUMMY_CREDENTIALS = new String[] {
-            "user:pass"
-    };
+    public static User loginUser = new User();
 
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
+
+
 
     // UI references.
     private EditText mNameView;
@@ -59,6 +59,16 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private View mProgressView;
     private View mLoginFormView;
     Button mEmailSignInButton;
+    private static final LoginActivity instance = new LoginActivity();
+
+
+    public static LoginActivity getInstance() {
+        return instance;
+    }
+
+    public ArrayList<User> getUsers() {
+        return users;
+    }
 
 
     /**
@@ -69,10 +79,29 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         startActivity(new Intent(this, WelcomeActivity.class));
     }
 
+
+
     @Override
+    /**
+     * creates the new loginActivity
+     */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        List<User> startUsers = new ArrayList<>();
+
+        startUsers.add(new User("Sam", "sam", "pass"));
+        startUsers.add(new User("Lien", "lien", "pass"));
+        startUsers.add(new User("Mika", "mika", "pass"));
+        startUsers.add(new User("Sri", "sri", "pass"));
+        startUsers.add(new User("Elliot", "elliot", "pass"));
+
+        for (User u : startUsers) {
+            if (!users.contains(u)) {
+                users.add(u);
+            }
+        }
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -123,6 +152,9 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         mProgressView = findViewById(R.id.login_progress);
     }
 
+    /**
+     * handles autocomplete tasks
+     */
     private void populateAutoComplete() {
         getLoaderManager().initLoader(0, null, this);
     }
@@ -183,15 +215,15 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         }
     }
 
-    private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return true;
-    }
-
-    private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return true;
-    }
+//    private boolean isEmailValid(String email) {
+//        //TODO: Replace this with your own logic
+//        return true;
+//    }
+//
+//    private boolean isPasswordValid(String password) {
+//        //TODO: Replace this with your own logic
+//        return true;
+//    }
 
     /**
      * Shows the progress UI and hides the login form.
@@ -230,6 +262,9 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     }
 
     @Override
+    /**
+     * creates a loader
+     */
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         return new CursorLoader(this,
                 // Retrieve data rows for the device user's 'profile' contact.
@@ -247,6 +282,9 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     }
 
     @Override
+    /**
+     * handles the loader finishing
+     */
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         List<String> emails = new ArrayList<String>();
         cursor.moveToFirst();
@@ -259,6 +297,9 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     }
 
     @Override
+    /**
+     * handles the loader reseting
+     */
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
 
     }
@@ -273,7 +314,10 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         int IS_PRIMARY = 1;
     }
 
-
+    /**
+     * handles emails in the autocomplete
+     * @param emailAddressCollection
+     */
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
         ArrayAdapter<String> adapter =
@@ -288,6 +332,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
      * the user.
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
+
+//        public User loginUser;
 
         private String mName;
         private String mEmail;
@@ -305,6 +351,9 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         }
 
         @Override
+        /**
+         * tries to log in the user in the background
+         */
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
@@ -315,43 +364,22 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 return false;
             }
 
-//            for (String credential : DUMMY_CREDENTIALS) {
-//                String[] pieces = credential.split(":");
-//                if (pieces[0].equals(mEmail)) {
-//                    // Account exists, return true if the password matches.
-//                    boolean b =  pieces[1].equals(mPassword);
-//                    mEmail = "";
-//                    mPassword = "";
-//                    return b;
-//                }
-//            }
-            User loginUser = new User(mName, mEmail, mPassword);
-//            for (User u : users) {
-//                Log.wtf("asdf", "outside user in users: " + loginUser.name + " - " + loginUser.username + " - " + loginUser.password);
-//            }
-//            Log.wtf("asdf", "loginUser: " + loginUser.name + " - " + loginUser.username + " - " + loginUser.password);
-//            for (User u : users) {
-////                if (u.equals(loginUser)) {
-//                Boolean us = loginUser.username.equals(u.username);
-//                Boolean pa = loginUser.password.equals(u.password);
-//                Log.wtf("username", us.toString());
-//                Log.wtf("password", pa.toString());
-//                if (((loginUser.username).equals(u.username) && (loginUser.password).equals(u.password))) {
-//                    Log.wtf("asdf", "user already in system");
-//                    return true; //already in system
-//                }
-//            }
+            loginUser = new User(mName, mEmail, mPassword);
+//            loginUser.name = mName;
+//            loginUser.username = mEmail;
+//            loginUser.password = mPassword;
+
+
+
             if (users.contains(loginUser)) { //checks email and password
                 Log.wtf("adsf", "already in system");
+
+                loginUser = users.get(users.indexOf(loginUser));
                 return true; //user is already in the system - will log in
             }
             else if (!loginUser.name.equals("")) { //name field is populated - want to register
                 loginUser.name = mName;
                 users.add(loginUser);
-                for (User u : users) {
-                    Log.wtf("asdf", "elseif user in users: " + loginUser.name + " - " + loginUser.username + " - " + loginUser.password);
-                }
-                Log.d("adsf", "added to array");
                 return true; //registers user and signs in
             } else { //some kind of error
                 return false;
@@ -360,13 +388,17 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         }
 
         @Override
+        /**
+         * proceeds to the friend list on success or returns to the login screen on failed login
+         */
         protected void onPostExecute(final Boolean success) {
 //            mAuthTask = null;
             showProgress(false);
 
 
             if (success) {
-                startActivity(new Intent(LoginActivity.this, LoggedInActivity.class));
+                Log.wtf("loginuser", loginUser.toString());
+                startActivity(new Intent(LoginActivity.this, FriendListActivity.class));
 //                finish();
             } else {
 //                mPasswordView.setError(getString(R.string.error_incorrect_password));
@@ -380,6 +412,9 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         }
 
         @Override
+        /**
+         * stops the progress
+         */
         protected void onCancelled() {
             mAuthTask = null;
             showProgress(false);

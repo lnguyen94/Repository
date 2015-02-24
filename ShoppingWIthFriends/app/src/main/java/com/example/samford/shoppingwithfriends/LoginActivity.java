@@ -40,9 +40,12 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
     /**
      * A dummy authentication store containing known user names and passwords.
-     * TODO: remove after connecting to a real authentication system.
      */
     public static ArrayList<User> users = new ArrayList<>();
+
+    /**
+     * the user that is logged in
+     */
     public static User loginUser = new User();
 
     /**
@@ -59,13 +62,24 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private View mProgressView;
     private View mLoginFormView;
     Button mEmailSignInButton;
+
+    /**
+     * The login activity currently in use
+     */
     private static final LoginActivity instance = new LoginActivity();
 
-
+    /**
+     * returns the current instances of the login activity
+     * @return the current login activity
+     */
     public static LoginActivity getInstance() {
         return instance;
     }
 
+    /**
+     * get list of users
+     * @return list of users
+     */
     public ArrayList<User> getUsers() {
         return users;
     }
@@ -73,17 +87,15 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
     /**
      * returns to the welcome screen on cancel
-     * @param v
+     * @param v the current view
      */
     public void cancelClick(View v){
         startActivity(new Intent(this, WelcomeActivity.class));
     }
 
-
-
-    @Override
     /**
-     * creates the new loginActivity
+     * the setup of the view
+     * @param savedInstanceState current state of the application
      */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -227,6 +239,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
     /**
      * Shows the progress UI and hides the login form.
+     * @param show whether it is done
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR2)
     public void showProgress(final boolean show) {
@@ -264,6 +277,9 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     @Override
     /**
      * creates a loader
+     * @param i the index of the bundle
+     * @param bundle the bundle in use
+     * @return where the cursor is currently
      */
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         return new CursorLoader(this,
@@ -284,6 +300,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     @Override
     /**
      * handles the loader finishing
+     * @param cursorLoader the load of the cursor
+     * @param cursor where the cursor is
      */
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         List<String> emails = new ArrayList<String>();

@@ -16,7 +16,7 @@ import android.content.Intent;
 public class WelcomeActivity extends ActionBarActivity {
     /**
      * proceeds to the login screen
-     * @param v
+     * @param v creates view
      */
     public void loginClick(View v){
         startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
@@ -27,6 +27,7 @@ public class WelcomeActivity extends ActionBarActivity {
     @Override
     /**
      * creates the welcome activity
+     * @param savedInstanceState creates the Bundle
      */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -42,6 +43,8 @@ public class WelcomeActivity extends ActionBarActivity {
     @Override
     /**
      * creates the menus
+     * @param menu the menu to create
+     * @return whether this menu was created
      */
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -52,6 +55,8 @@ public class WelcomeActivity extends ActionBarActivity {
     @Override
     /**
      * handles menu item selection
+     * @param item the item that was selected
+     * @return whether it was selected
      */
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -71,13 +76,16 @@ public class WelcomeActivity extends ActionBarActivity {
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment {
-
         public PlaceholderFragment() {
         }
 
         @Override
         /**
          * handles when the fragment is created
+         * @param inflater to inflate
+         * @param container where the item is contained
+         * @param savedInstanceState the bundle that is saved
+         * @return the View that is generated
          */
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {

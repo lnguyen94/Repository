@@ -38,7 +38,8 @@ public class AddFriendActivity extends ActionBarActivity {
 
         for (User u : users) {
             Log.wtf("-", u.toString());
-            if (!loginUser.friends.contains(u)) {
+            //wont add users already there or the login user to the potential friend list
+            if (!loginUser.friends.contains(u) && !loginUser.equals(u)) {
                 a.add(u);
             }
         }

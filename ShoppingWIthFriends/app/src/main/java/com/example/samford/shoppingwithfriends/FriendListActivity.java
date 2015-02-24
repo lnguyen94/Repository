@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -23,6 +24,7 @@ public class FriendListActivity extends ActionBarActivity {
     private ListAdapter mAdapter;
 
     private static final FriendListActivity instance = new FriendListActivity();
+    public static User selectedFriend = new User();
 
     public static FriendListActivity getInstance() {
         return instance;
@@ -36,14 +38,25 @@ public class FriendListActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_list);
 
-
-        User loginUser = LoginActivity.getInstance().loginUser;
+        final User loginUser = LoginActivity.getInstance().loginUser;
         List<User> friends = loginUser.friends;
         ListView list = (ListView) findViewById(R.id.friend_list);
         mAdapter = new ArrayAdapter<User>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, friends);
 
         list.setAdapter(mAdapter);
+
+
+        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                selectedFriend = (User) parent.getItemAtPosition(position);
+                Log.wtf("selectedFriend", selectedFriend.toString());
+                startActivity(new Intent(FriendListActivity.this, FriendDetailActivity.class));
+            }
+        });
+
     }
 
 

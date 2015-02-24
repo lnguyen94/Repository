@@ -11,5 +11,7 @@
     <string name="title_activity_new_login">NewLoginActivity</string>
     <string name="title_activity_add_friend">AddFriendActivity</string>
     <string name="title_activity_friend_list">FriendListActivity</string>
+    <string name="title_activity_friend_detail">FriendDetailActivity</string>
+    <string name="title_activity_add_item">AddItemActivity</string>
 
 </resources>

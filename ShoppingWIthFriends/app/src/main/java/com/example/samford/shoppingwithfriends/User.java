@@ -8,8 +8,9 @@ import java.util.ArrayList;
 public class User {
     public String name, username, password;
     //username is synonymous to username at this juncture
-    public int rating, salesReports;
+    public int rating, reports;
     public ArrayList<User> friends = new ArrayList<>();
+    public ArrayList<Item> items = new ArrayList<>();
     public User() {
 
     }
@@ -24,7 +25,7 @@ public class User {
         this.username = username;
         this.password = password;
         this.rating = 0;
-        this.salesReports = 0;
+        this.reports = 0;
     }
 
     /**
@@ -44,6 +45,10 @@ public class User {
      */
     public void addFriend(User friend) {
         this.friends.add(friend);
+    }
+
+    public void addItem(Item item) {
+        this.items.add(item);
     }
 
     /**

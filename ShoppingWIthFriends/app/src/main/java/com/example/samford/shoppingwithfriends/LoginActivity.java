@@ -106,8 +106,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         startUsers.add(new User("Sam", "sam", "pass"));
         startUsers.add(new User("Lien", "lien", "pass"));
         startUsers.add(new User("Mika", "mika", "pass"));
-        startUsers.add(new User("Sri", "sri", "pass"));
-        startUsers.add(new User("Elliot", "elliot", "pass"));
+        startUsers.add(new User("Shree", "shree", "pass"));
+        startUsers.add(new User("Elliott", "elliott", "pass"));
 
         for (User u : startUsers) {
             if (!users.contains(u)) {
@@ -416,7 +416,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
             if (success) {
                 Log.wtf("loginuser", loginUser.toString());
-                startActivity(new Intent(LoginActivity.this, FriendListActivity.class));
+                startActivity(new Intent(LoginActivity.this, LoggedInActivity.class));
 //                finish();
             } else {
 //                mPasswordView.setError(getString(R.string.error_incorrect_password));

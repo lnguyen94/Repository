@@ -7,30 +7,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 
-public class FriendDetailActivity extends ActionBarActivity {
+public class LoggedInActivity extends ActionBarActivity {
     /**
-     * creates teh frienddetailacticity
+     * creates the loggedInActivity
      * @param savedInstanceState
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_friend_detail);
-
-        User friend = FriendListActivity.getInstance().selectedFriend;
-
-        TextView name = (TextView) findViewById(R.id.name);
-        name.setText(friend.name);
-        TextView email = (TextView) findViewById(R.id.email);
-        email.setText("Email: " + friend.username);
-        TextView rating = (TextView) findViewById(R.id.rating);
-        rating.setText("Rating: " + friend.rating);
-        TextView reports = (TextView) findViewById(R.id.reports);
-        reports.setText("Reports: " + friend.reports);
-
+        setContentView(R.layout.activity_logged_in2);
     }
 
     /**
@@ -41,12 +28,12 @@ public class FriendDetailActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_friend_detail, menu);
+        getMenuInflater().inflate(R.menu.menu_logged_in, menu);
         return true;
     }
 
     /**
-     * handles selected items
+     * handles selected item
      * @param item
      * @return
      */
@@ -66,11 +53,24 @@ public class FriendDetailActivity extends ActionBarActivity {
     }
 
     /**
-     * removes a friend from the loginUser's friend list
+     * goes to friend activity
      * @param v
      */
-    public void defriend(View v) {
-        LoginActivity.getInstance().loginUser.friends.remove(FriendListActivity.getInstance().selectedFriend);
+    public void friendClick(View v) {
         startActivity(new Intent(this, FriendListActivity.class));
+    }
+    /**
+     * goes to itemlist activity
+     * @param v
+     */
+    public void itemClick(View v) {
+        startActivity(new Intent(this, ItemListActivity.class));
+    }
+    /**
+     * goes to welcome activity
+     * @param v
+     */
+    public void logoutClick(View v) {
+        startActivity(new Intent(this, WelcomeActivity.class));
     }
 }

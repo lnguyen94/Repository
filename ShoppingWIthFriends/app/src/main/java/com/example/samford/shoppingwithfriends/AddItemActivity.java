@@ -12,7 +12,10 @@ import android.widget.EditText;
 public class AddItemActivity extends ActionBarActivity {
     private EditText mName, mPrice;
 
-
+    /**
+     * creates the addItemActivity
+     * @param savedInstanceState the saved state
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,6 +24,11 @@ public class AddItemActivity extends ActionBarActivity {
         mPrice = (EditText) findViewById(R.id.price);
     }
 
+    /**
+     * creates the menu
+     * @param menu the menu
+     * @return if it was created
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -28,6 +36,11 @@ public class AddItemActivity extends ActionBarActivity {
         return true;
     }
 
+    /**
+     * handles the selected item
+     * @param item the item
+     * @return if selected
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -44,7 +57,7 @@ public class AddItemActivity extends ActionBarActivity {
     }
 
     /**
-     *
+     * adds an item to the array
      * @param v
      */
     public void addItemClick(View v){

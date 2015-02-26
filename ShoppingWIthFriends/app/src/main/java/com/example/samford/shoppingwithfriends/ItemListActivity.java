@@ -3,50 +3,36 @@ package com.example.samford.shoppingwithfriends;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
 
-public class FriendDetailActivity extends ActionBarActivity {
+public class ItemListActivity extends ActionBarActivity {
     /**
-     * creates teh frienddetailacticity
+     * creates the itemlistactivity
      * @param savedInstanceState
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_friend_detail);
-
-        User friend = FriendListActivity.getInstance().selectedFriend;
-
-        TextView name = (TextView) findViewById(R.id.name);
-        name.setText(friend.name);
-        TextView email = (TextView) findViewById(R.id.email);
-        email.setText("Email: " + friend.username);
-        TextView rating = (TextView) findViewById(R.id.rating);
-        rating.setText("Rating: " + friend.rating);
-        TextView reports = (TextView) findViewById(R.id.reports);
-        reports.setText("Reports: " + friend.reports);
-
+        setContentView(R.layout.activity_item_list);
     }
 
     /**
-     * creates the menu
+     * creates menu
      * @param menu
      * @return
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_friend_detail, menu);
+        getMenuInflater().inflate(R.menu.menu_item_list, menu);
         return true;
     }
 
     /**
-     * handles selected items
+     * handles item selected
      * @param item
      * @return
      */
@@ -66,11 +52,10 @@ public class FriendDetailActivity extends ActionBarActivity {
     }
 
     /**
-     * removes a friend from the loginUser's friend list
+     * goes to the add item activity
      * @param v
      */
-    public void defriend(View v) {
-        LoginActivity.getInstance().loginUser.friends.remove(FriendListActivity.getInstance().selectedFriend);
-        startActivity(new Intent(this, FriendListActivity.class));
+    public void addItemClick(View v) {
+        startActivity(new Intent(this, AddItemActivity.class));
     }
 }

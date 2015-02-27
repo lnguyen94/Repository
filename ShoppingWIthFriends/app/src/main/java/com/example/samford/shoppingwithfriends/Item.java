@@ -1,18 +1,22 @@
 package com.example.samford.shoppingwithfriends;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 /**
  * Created by samford on 2/24/15.
  */
 public class Item {
     public String name;
-    public int price;
-    public Item(String name, int price) {
+    public double price;
+    public NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(Locale.US);
+    public Item(String name, double price) {
         this.name = name;
         this.price = price;
     }
 
     public String toString() {
-        return this.name + " @ " + this.price;
+        return this.name + " @ " + currencyFormat.format(this.price);
     }
 
     public boolean equals(Item item) {

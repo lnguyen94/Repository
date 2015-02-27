@@ -46,7 +46,6 @@ public class FriendListActivity extends ActionBarActivity {
 
         list.setAdapter(mAdapter);
 
-
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

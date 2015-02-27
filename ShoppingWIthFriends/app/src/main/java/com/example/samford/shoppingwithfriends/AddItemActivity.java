@@ -60,12 +60,12 @@ public class AddItemActivity extends ActionBarActivity {
      * adds an item to the array
      * @param v
      */
-    public void addItemClick(View v){
+    public void addItem(View v){
         String name = mName.getText().toString();
-        int price = Integer.parseInt(mPrice.getText().toString());// parses int
+        double price = Double.parseDouble(mPrice.getText().toString()); //parses double
         Item item = new Item(name, price);
         User loginUser = LoginActivity.getInstance().loginUser;
         loginUser.addItem(item);
-        startActivity(new Intent(this, FriendListActivity.class));
+        startActivity(new Intent(this, ItemListActivity.class));
     }
 }

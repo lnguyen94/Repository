@@ -5,18 +5,15 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
-import android.content.ContentResolver;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.AsyncTask;
-
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -31,7 +28,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
-
 
 /**
  * A login screen that offers login via email/password.
@@ -52,8 +48,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
-
-
 
     // UI references.
     private EditText mNameView;
@@ -84,12 +78,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         return users;
     }
 
-
     /**
      * returns to the welcome screen on cancel
      * @param v the current view
      */
-    public void cancelClick(View v){
+    public void cancelClick(View v) {
         startActivity(new Intent(this, WelcomeActivity.class));
     }
 
@@ -122,9 +115,11 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         mNameView = (EditText) findViewById(R.id.name);
 
         mPasswordView = (EditText) findViewById(R.id.password);
-        mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        mPasswordView.setOnEditorActionListener(
+                new TextView.OnEditorActionListener() {
             @Override
-            public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
+            public boolean onEditorAction(TextView textView, int id,
+                                          KeyEvent keyEvent) {
                 if (id == R.id.login || id == EditorInfo.IME_NULL) {
                     attemptLogin();
                     return true;
@@ -141,11 +136,13 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             }
         });
 
-        final Button registerExpand = (Button) findViewById(R.id.expand_register_button);
+        final Button registerExpand =
+                (Button) findViewById(R.id.expand_register_button);
         registerExpand.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                LinearLayout l = (LinearLayout) findViewById(R.id.register_layout);
+                LinearLayout l =
+                        (LinearLayout) findViewById(R.id.register_layout);
                 l.setVisibility(View.VISIBLE);
                 registerExpand.setVisibility(View.GONE);
 
@@ -170,7 +167,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private void populateAutoComplete() {
         getLoaderManager().initLoader(0, null, this);
     }
-
 
     /**
      * Attempts to sign in or register the account specified by the login form.
@@ -438,9 +434,4 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             showProgress(false);
         }
     }
-
-
 }
-
-
-

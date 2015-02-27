@@ -3,16 +3,21 @@ package com.example.samford.shoppingwithfriends;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
-
+/**
+ * Controller class to view the main landing page once a user logs in
+ *
+ * @author Sam
+ * @version 1.0
+ */
 public class LoggedInActivity extends ActionBarActivity {
     /**
-     * creates the loggedInActivity
-     * @param savedInstanceState
+     * Creates a new LoggedInActivity
+     *
+     * @param savedInstanceState the saved state of the previous runtime
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,9 +26,11 @@ public class LoggedInActivity extends ActionBarActivity {
     }
 
     /**
-     * creates the menu
-     * @param menu
-     * @return
+     * Initialize the contents of the Activity's standard options menu.
+     *
+     * @param menu The options menu in which items are placed.
+     * @return return true for the menu to be displayed;
+     *         return false means it will not be shown.
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -33,9 +40,11 @@ public class LoggedInActivity extends ActionBarActivity {
     }
 
     /**
-     * handles selected item
-     * @param item
-     * @return
+     * Handles an item selected
+     *
+     * @param item the item selected
+     * @return boolean Return false to allow normal menu processing to
+     *         proceed, true to consume it here.
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -54,21 +63,23 @@ public class LoggedInActivity extends ActionBarActivity {
 
     /**
      * goes to friend activity
-     * @param v
+     * @param v The current view of the app
      */
     public void friendClick(View v) {
         startActivity(new Intent(this, FriendListActivity.class));
     }
+
     /**
      * goes to itemlist activity
-     * @param v
+     * @param v The current view of the app
      */
     public void itemClick(View v) {
         startActivity(new Intent(this, ItemListActivity.class));
     }
+
     /**
      * goes to welcome activity
-     * @param v
+     * @param v The current view of the app
      */
     public void logoutClick(View v) {
         startActivity(new Intent(this, WelcomeActivity.class));

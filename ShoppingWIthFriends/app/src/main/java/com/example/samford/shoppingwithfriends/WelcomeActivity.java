@@ -1,7 +1,6 @@
 package com.example.samford.shoppingwithfriends;
 
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,26 +8,30 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
 import android.content.Intent;
 
-
+/**
+ * Controller class to view the main landing page when the app opens
+ *
+ * @author Sam
+ * @version 1.0
+ */
 public class WelcomeActivity extends ActionBarActivity {
     /**
      * proceeds to the login screen
-     * @param v creates view
+     *
+     * @param v The current view of the app
      */
-    public void loginClick(View v){
+    public void loginClick(View v) {
         startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
-
-//        Intent intent = new Intent(this, LoginActivity.class);
     }
 
-    @Override
     /**
-     * creates the welcome activity
-     * @param savedInstanceState creates the Bundle
+     * Creates a new WelcomeActivity
+     *
+     * @param savedInstanceState the saved state of the previous runtime
      */
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
@@ -39,25 +42,28 @@ public class WelcomeActivity extends ActionBarActivity {
         }
     }
 
-
-    @Override
     /**
-     * creates the menus
-     * @param menu the menu to create
-     * @return whether this menu was created
+     * Initialize the contents of the Activity's standard options menu.
+     *
+     * @param menu The options menu in which items are placed.
+     * @return return true for the menu to be displayed;
+     *         return false means it will not be shown.
      */
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_welcome, menu);
         return true;
     }
 
-    @Override
     /**
-     * handles menu item selection
-     * @param item the item that was selected
-     * @return whether it was selected
+     * Handles an item selected
+     *
+     * @param item the item selected
+     * @return boolean Return false to allow normal menu processing to
+     *         proceed, true to consume it here.
      */
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -76,34 +82,24 @@ public class WelcomeActivity extends ActionBarActivity {
      * A placeholder fragment containing a simple view.
      */
     public static class PlaceholderFragment extends Fragment {
-        public PlaceholderFragment() {
-        }
-
-        @Override
         /**
-         * handles when the fragment is created
+         * Create an empty PlaceholderFragment
+         */
+        public PlaceholderFragment() { }
+
+        /**
+         * Handles when the fragment is created
+         *
          * @param inflater to inflate
          * @param container where the item is contained
          * @param savedInstanceState the bundle that is saved
          * @return the View that is generated
          */
+        @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.fragment_welcome, container, false);
-            return rootView;
+            return inflater.inflate(R.layout.fragment_welcome,
+                    container, false);
         }
-
-//        Button yourButton = (Button) findViewById(R.id.loginButton);
-//
-//        loginButton.setOnClickListener(new OnClickListener(){
-//            public void onClick(View v){
-//                startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
-//            }
-//        });
-
-//        public void loginClick(View v){
-//            startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
-//        }
-
     }
 }

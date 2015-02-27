@@ -8,13 +8,20 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
-
+/**
+ * Controller class to add an item
+ *
+ * @author Sam
+ * @version 1.0
+ */
 public class AddItemActivity extends ActionBarActivity {
-    private EditText mName, mPrice;
+    private EditText mName;
+    private EditText mPrice;
 
     /**
-     * creates the addItemActivity
-     * @param savedInstanceState the saved state
+     * Creates the addItemActivity
+     *
+     * @param savedInstanceState the saved state of the previous runtime
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,9 +32,11 @@ public class AddItemActivity extends ActionBarActivity {
     }
 
     /**
-     * creates the menu
-     * @param menu the menu
-     * @return if it was created
+     * Initialize the contents of the Activity's standard options menu.
+     *
+     * @param menu The options menu in which items are placed.
+     * @return return true for the menu to be displayed;
+     *         return false means it will not be shown.
      */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -37,9 +46,11 @@ public class AddItemActivity extends ActionBarActivity {
     }
 
     /**
-     * handles the selected item
-     * @param item the item
-     * @return if selected
+     * Handles an item selected from a menu
+     *
+     * @param item the item selected
+     * @return boolean Return false to allow normal menu processing to
+     *         proceed, true to consume it here.
      */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -57,15 +68,18 @@ public class AddItemActivity extends ActionBarActivity {
     }
 
     /**
-     * adds an item to the array
-     * @param v
+     * Adds an item to the array
+     *
+     * @param v the current view of the app
      */
-    public void addItem(View v){
+    public void addItemClick(View v) {
         String name = mName.getText().toString();
-        double price = Double.parseDouble(mPrice.getText().toString()); //parses double
+
+        // parse the int
+        int price = Integer.parseInt(mPrice.getText().toString());
         Item item = new Item(name, price);
         User loginUser = LoginActivity.getInstance().loginUser;
         loginUser.addItem(item);
-        startActivity(new Intent(this, ItemListActivity.class));
+        startActivity(new Intent(this, FriendListActivity.class));
     }
 }

@@ -97,17 +97,15 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        List<User> startUsers = new ArrayList<>();
+        List<String> startUsers = new ArrayList<>();
+        DatabaseHandler dbh = new DatabaseHandler(this);
 
-        startUsers.add(new User("Sam", "sam", "pass"));
-        startUsers.add(new User("Lien", "lien", "pass"));
-        startUsers.add(new User("Mika", "mika", "pass"));
-        startUsers.add(new User("Shree", "shree", "pass"));
-        startUsers.add(new User("Elliott", "elliott", "pass"));
-
-        for (User u : startUsers) {
-            if (!users.contains(u)) {
-                users.add(u);
+        startUsers = dbh.getAllUsers();
+//
+        for (String u : startUsers) {
+            User friend = dbh.getBasicUserData(u);
+            if (!users.contains(friend)) {
+                users.add(friend);
             }
         }
 

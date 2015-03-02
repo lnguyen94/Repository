@@ -219,15 +219,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         User returnUser = new User();
         Cursor userCursor = db.rawQuery("SELECT * FROM "
                         + TABLE_USERS + " WHERE " + USERS_EMAIL
-                        + "=? AND " + USERS_PASSWORD + " =? LIMIT 1",
+                        + "=? " + "LIMIT 1",
                 new String[]{email});
-        returnUser.setEmail(userCursor.getString(1));
-        returnUser.setName(userCursor.getString(3));
-        returnUser.setAvgRating(userCursor.getInt(4));
-        returnUser.setNumOfRatings(userCursor.getInt(5));
-        returnUser.setLastLocLat(userCursor.getDouble(6));
-        returnUser.setLastLocLong(userCursor.getDouble(7));
-        returnUser.setPriceThresh(userCursor.getDouble(8));
+        userCursor.moveToFirst();
+        returnUser.setEmail(userCursor.getString(0));
+        returnUser.setName(userCursor.getString(2));
+        returnUser.setAvgRating(userCursor.getInt(3));
+        returnUser.setNumOfRatings(userCursor.getInt(4));
+        returnUser.setLastLocLat(userCursor.getDouble(5));
+        returnUser.setLastLocLong(userCursor.getDouble(6));
+        returnUser.setPriceThresh(userCursor.getDouble(7));
         userCursor.close();
         db.close();
         return returnUser;
@@ -242,10 +243,12 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public ArrayList<User> getFriends(String email) {
         SQLiteDatabase db = super.getReadableDatabase();
         ArrayList<User> returnList = new ArrayList<>();
-        Cursor friendCursor = db.rawQuery("SELECT * FROM " + TABLE_USERS
-                        + " RIGHT JOIN (SELECT " + FRIENDS_USER2 + " WHERE "
-                        + FRIENDS_USER1 + " =?) ON " + FRIENDS_USER2 + " = "
-                        + USERS_EMAIL,
+        Cursor friendCursor = db.rawQuery("SELECT * FROM "
+                        + TABLE_USERS + " WHERE "
+                        + USERS_EMAIL + " IN (SELECT "
+                        + FRIENDS_USER2 + " FROM "
+                        + TABLE_FRIENDS + " WHERE "
+                        + FRIENDS_USER1 + " =?)",
                 new String[]{email});
         if (friendCursor.moveToFirst()) {
             do {
@@ -275,7 +278,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = super.getReadableDatabase();
         ArrayList<Item> returnList = new ArrayList<>();
         Cursor itemCursor = db.rawQuery("SELECT * FROM " + TABLE_PRODUCTS
-                        + "WHERE " + PRODUCTS_RECOMMENDEE + " =?",
+                        + " WHERE " + PRODUCTS_RECOMMENDEE + " =?",
                 new String[]{email});
         if (itemCursor.moveToFirst()) {
             do {
@@ -390,9 +393,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     public long addFriend(String currUser, String friendToAdd) {
         SQLiteDatabase db = super.getWritableDatabase();
 
-        Cursor cursor = db.rawQuery("SELECT EXISTS(SELECT 1 FROM "
+        Cursor cursor = db.rawQuery("SELECT EXISTS ( SELECT 1 FROM "
                         + TABLE_FRIENDS + " WHERE " + FRIENDS_USER1
-                        + "=? AND " + FRIENDS_USER2 + " =? LIMIT 1)",
+                        + " =? AND " + FRIENDS_USER2 + " =? LIMIT 1)",
                 new String[]{currUser, friendToAdd});
         if (cursor != null) {
             cursor.moveToFirst();

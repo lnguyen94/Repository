@@ -46,7 +46,7 @@ public class FriendListActivity extends ActionBarActivity {
         setContentView(R.layout.activity_friend_list);
 
         final User loginUser = LoginActivity.getInstance().loginUser;
-        List<User> friends = loginUser.friends;
+        List<User> friends = loginUser.getFriends();
         ListView list = (ListView) findViewById(R.id.friend_list);
         mAdapter = new ArrayAdapter<>(
                 this,

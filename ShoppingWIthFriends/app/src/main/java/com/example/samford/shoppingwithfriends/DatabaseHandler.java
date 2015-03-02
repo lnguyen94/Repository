@@ -30,7 +30,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String TABLE_PRODUCTS = "Products";
 
     // USERS Column Names
-    private static final String USERS_USERNAME = "UserName";
     private static final String USERS_EMAIL = "Email";
     private static final String USERS_PASSWORD = "Password";
     private static final String USERS_NAME = "Name";
@@ -75,8 +74,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_USERS + " ("
-                + USERS_USERNAME + " TEXT PRIMARY KEY, "
-                + USERS_EMAIL + " TEXT, "
+                + USERS_EMAIL + " TEXT PRIMARY KEY, "
                 + USERS_PASSWORD + " TEXT, "
                 + USERS_NAME + " TEXT, "
                 + USERS_AVGRATING + " INTEGER, "
@@ -84,20 +82,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + USERS_LASTLOCLAT + " REAL, "
                 + USERS_LASTLOCLONG + " REAL, "
                 + USERS_PRICETHRESH + " REAL"
-                + ") WITHOUT ROWID;");
+                + ");");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_FRIENDS + " ("
                 + FRIENDS_USER1 + " TEXT, "
                 + FRIENDS_USER2 + " TEXT, "
                 + FRIENDS_RATING + " INTEGER, "
                 + "FOREIGN KEY (" + FRIENDS_USER1 + ") REFERENCES "
-                + TABLE_USERS + "(" + USERS_USERNAME + "),"
+                + TABLE_USERS + "(" + USERS_EMAIL + "),"
                 + "FOREIGN KEY (" + FRIENDS_USER2 + ") REFERENCES "
-                + TABLE_USERS + "(" + USERS_USERNAME + "),"
+                + TABLE_USERS + "(" + USERS_EMAIL + "),"
                 + "PRIMARY KEY ( "
                 + FRIENDS_USER1 + ", "
                 + FRIENDS_USER2 + ", "
                 + FRIENDS_RATING
-                + ") WITHOUT ROWID;");
+                + "));");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_PRODUCTS + " ("
                 + PRODUCTS_NAME + " TEXT, "
                 + PRODUCTS_RECOMMENDER + " TEXT, "
@@ -112,14 +110,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + PRODUCTS_MINQUANTREM + " INTEGER, "
                 + PRODUCTS_SALEEND + " TEXT, "
                 + "FOREIGN KEY (" + PRODUCTS_RECOMMENDER + ") REFERENCES "
-                + TABLE_USERS + "(" + USERS_USERNAME + "),"
+                + TABLE_USERS + "(" + USERS_EMAIL + "),"
                 + "FOREIGN KEY (" + PRODUCTS_RECOMMENDEE + ") REFERENCES "
-                + TABLE_USERS + "(" + USERS_USERNAME + "),"
+                + TABLE_USERS + "(" + USERS_EMAIL + "),"
                 + "PRIMARY KEY ( "
                 + PRODUCTS_NAME + ", "
                 + PRODUCTS_RECOMMENDER + ", "
-                + PRODUCTS_RECOMMENDEE + ") "
-                + "WITHOUT ROWID;");
+                + PRODUCTS_RECOMMENDEE
+                + "));");
     }
 
     /**
@@ -151,15 +149,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
         // First check if the User already exists
         Cursor cursor = db.rawQuery("SELECT EXISTS(SELECT 1 FROM "
-                + TABLE_USERS + " WHERE " + USERS_USERNAME
-                + "=? LIMIT 1)", new String[]{user.username});
+                + TABLE_USERS + " WHERE " + USERS_EMAIL
+                + "=? LIMIT 1)", new String[]{user.getEmail()});
         if (cursor != null) {
             cursor.moveToFirst();
         }
         if (cursor.getInt(0) == 0) {
             // If the record is not there
             ContentValues values = new ContentValues();
-            values.put(USERS_USERNAME, user.getUsername());
             values.put(USERS_EMAIL, user.getEmail());
             values.put(USERS_PASSWORD, user.getPassword());
             values.put(USERS_NAME, user.getName());
@@ -180,29 +177,29 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     /**
      * Logs user in and populates their data object
      *
-     * @param username the username entered
+     * @param email the email entered
      * @param password the password entered
      * @return the object of the data for the user
      * @throws SQLException various possible error that could happen
      * in the method
      */
-    public User login(String username, String password) throws SQLException {
+    public User login(String email, String password) throws SQLException {
         User returnUser;
         SQLiteDatabase db = super.getReadableDatabase();
 
         // First check if the User already exists
         Cursor cursor = db.rawQuery("SELECT EXISTS(SELECT 1 FROM "
-                        + TABLE_USERS + " WHERE " + USERS_USERNAME
+                        + TABLE_USERS + " WHERE " + USERS_EMAIL
                         + "=? AND " + USERS_PASSWORD + " =? LIMIT 1)",
-                new String[]{username, password});
+                new String[]{email, password});
         if (cursor != null) {
             cursor.moveToFirst();
         }
         if (cursor.getInt(0) == 1) {
             cursor.close();
-            returnUser = getBasicUserData(username);
-            returnUser.setFriends(getFriends(returnUser.username));
-            returnUser.setWhishlist(getWishlist(returnUser.username));
+            returnUser = getBasicUserData(email);
+            returnUser.setFriends(getFriends(returnUser.getEmail()));
+            returnUser.setItems(getItems(returnUser.getEmail()));
 
         } else {
             throw new SQLException("Credentials invalid or No user exists");
@@ -214,17 +211,16 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      * Get the data out of the USERS table for a particular user
      * (No wish list or friends list)
      *
-     * @param username the username of the user to retrieve
+     * @param email the email of the user to retrieve
      * @return the basic user data
      */
-    public User getBasicUserData(String username) {
+    public User getBasicUserData(String email) {
         SQLiteDatabase db = super.getReadableDatabase();
         User returnUser = new User();
         Cursor userCursor = db.rawQuery("SELECT * FROM "
-                        + TABLE_USERS + " WHERE " + USERS_USERNAME
+                        + TABLE_USERS + " WHERE " + USERS_EMAIL
                         + "=? AND " + USERS_PASSWORD + " =? LIMIT 1",
-                new String[]{username, password});
-        returnUser.setUsername(userCursor.getString(0));
+                new String[]{email});
         returnUser.setEmail(userCursor.getString(1));
         returnUser.setName(userCursor.getString(3));
         returnUser.setAvgRating(userCursor.getInt(4));
@@ -240,28 +236,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     /**
      * Get the basic data for each of the friends of the input user
      *
-     * @param userName the user whose friends will be returned
+     * @param email the user whose friends will be returned
      * @return a collection of the user's friends' basic data
      */
-    public List<User> getFriends(String userName) {
+    public ArrayList<User> getFriends(String email) {
         SQLiteDatabase db = super.getReadableDatabase();
         ArrayList<User> returnList = new ArrayList<>();
         Cursor friendCursor = db.rawQuery("SELECT * FROM " + TABLE_USERS
                         + " RIGHT JOIN (SELECT " + FRIENDS_USER2 + " WHERE "
                         + FRIENDS_USER1 + " =?) ON " + FRIENDS_USER2 + " = "
-                        + USERS_USERNAME,
-                new String[]{userName});
+                        + USERS_EMAIL,
+                new String[]{email});
         if (friendCursor.moveToFirst()) {
             do {
                 User friend = new User();
-                friend.setUserName(friendCursor.getString(0));
-                friend.setEmail(friendCursor.getString(1));
-                friend.setName(friendCursor.getString(3));
-                friend.setAvgRating(friendCursor.getInt(4));
-                friend.setNumOfRatings(friendCursor.getInt(5));
-                friend.setLastLocLat(friendCursor.getInt(6));
-                friend.setLastLocLong(friendCursor.getInt(7));
-                friend.setPriceThresh(friendCursor.getDouble(8));
+                friend.setEmail(friendCursor.getString(0));
+                friend.setName(friendCursor.getString(2));
+                friend.setAvgRating(friendCursor.getInt(3));
+                friend.setNumOfRatings(friendCursor.getInt(4));
+                friend.setLastLocLat(friendCursor.getInt(5));
+                friend.setLastLocLong(friendCursor.getInt(6));
+                friend.setPriceThresh(friendCursor.getDouble(7));
                 returnList.add(friend);
             } while (friendCursor.moveToNext());
         }
@@ -273,15 +268,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     /**
      * Get the basic data for each of the friends of the input user
      *
-     * @param userName the user whose friends will be returned
+     * @param email the user whose friends will be returned
      * @return a collection of the user's friends' basic data
      */
-    public List<Item> getWishlist(String userName) {
+    public ArrayList<Item> getItems(String email) {
         SQLiteDatabase db = super.getReadableDatabase();
         ArrayList<Item> returnList = new ArrayList<>();
         Cursor itemCursor = db.rawQuery("SELECT * FROM " + TABLE_PRODUCTS
                         + "WHERE " + PRODUCTS_RECOMMENDEE + " =?",
-                new String[]{userName});
+                new String[]{email});
         if (itemCursor.moveToFirst()) {
             do {
                 Item item = new Item();
@@ -359,7 +354,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      * Populate a user's wishlist item with data
      *
      * @param item the Item to fill in data into the database
-     * @param recommender the username of the person recommending it
+     * @param recommender the email of the person recommending it
      * @return the number of rows affected, which should be 1
      */
     public int reportProduct(Item item, String recommender) {
@@ -387,9 +382,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     /**
      * Add a friend Relation to the FRIENDS table
      *
-     * @param currUser the username of the user currently logged in
+     * @param currUser the email of the user currently logged in
      *                 and who want to add a friend
-     * @param friendToAdd the username of the friend who will be added
+     * @param friendToAdd the email of the friend who will be added
      * @return the row ID of the newly inserted row, or -1 if an error occurred
      */
     public long addFriend(String currUser, String friendToAdd) {
@@ -567,14 +562,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         if (c.moveToFirst()) {
             do {
                 User user = new User();
-                user.setUserName(c.getString(0));
-                user.setEmail(c.getString(1));
-                user.setName(c.getString(3));
-                user.setAvgRating(c.getInt(4));
-                user.setNumOfRatings(c.getInt(5));
-                user.setLastLocLat(c.getDouble(6));
-                user.setLastLocLong(c.getDouble(7));
-                user.setPriceThresh(c.getDouble(8));
+                user.setEmail(c.getString(0));
+                user.setName(c.getString(2));
+                user.setAvgRating(c.getInt(3));
+                user.setNumOfRatings(c.getInt(4));
+                user.setLastLocLat(c.getDouble(5));
+                user.setLastLocLong(c.getDouble(6));
+                user.setPriceThresh(c.getDouble(7));
                 returnList.add(user);
             } while (c.moveToNext());
         }
@@ -604,13 +598,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     /**
-     * Return all registered users' usernames.
-     * @return the List of the usernames
+     * Return all registered users' emails.
+     * @return the List of the email
      */
     public List<String> getAllUsers() {
         SQLiteDatabase db = super.getReadableDatabase();
         ArrayList<String> returnList = new ArrayList<>();
-        Cursor userCursor = db.rawQuery("SELECT " + USERS_USERNAME + " FROM "
+        Cursor userCursor = db.rawQuery("SELECT " + USERS_EMAIL + " FROM "
                 + TABLE_USERS, new String[]{});
         if (userCursor.moveToFirst()) {
             do {

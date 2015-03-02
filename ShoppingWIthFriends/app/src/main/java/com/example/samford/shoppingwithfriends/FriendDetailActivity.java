@@ -28,13 +28,13 @@ public class FriendDetailActivity extends ActionBarActivity {
         User friend = FriendListActivity.getInstance().selectedFriend;
 
         TextView name = (TextView) findViewById(R.id.name);
-        name.setText(friend.name);
+        name.setText(friend.getName());
         TextView email = (TextView) findViewById(R.id.email);
-        email.setText("Email: " + friend.username);
+        email.setText("Email: " + friend.getEmail());
         TextView rating = (TextView) findViewById(R.id.rating);
-        rating.setText("Rating: " + friend.rating);
+        rating.setText("Rating: " + friend.getAvgRating());
         TextView reports = (TextView) findViewById(R.id.reports);
-        reports.setText("Reports: " + friend.reports);
+        reports.setText("Reports: " + friend.getNumOfRatings());
 
     }
 
@@ -78,8 +78,7 @@ public class FriendDetailActivity extends ActionBarActivity {
      * @param v The current view of the app
      */
     public void defriend(View v) {
-        LoginActivity.getInstance().loginUser.friends.remove(
-                FriendListActivity.getInstance().selectedFriend);
+        LoginActivity.getInstance().loginUser.removeFriend(FriendListActivity.getInstance().selectedFriend);
         startActivity(new Intent(this, FriendListActivity.class));
     }
 }

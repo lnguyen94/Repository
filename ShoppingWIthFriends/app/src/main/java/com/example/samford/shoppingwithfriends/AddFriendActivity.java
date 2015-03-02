@@ -43,7 +43,7 @@ public class AddFriendActivity extends ActionBarActivity {
             Log.wtf("-", u.toString());
             // won't add users already there or
             // the login user to the potential friend list
-            if (!loginUser.friends.contains(u) && !loginUser.equals(u)) {
+            if (!loginUser.getFriends().contains(u) && !loginUser.equals(u)) {
                 a.add(u);
             }
         }
@@ -66,9 +66,9 @@ public class AddFriendActivity extends ActionBarActivity {
 
                 User friend = (User) parent.getItemAtPosition(position);
 
-                if (!loginUser.friends.contains(friend)) {
+                if (!loginUser.getFriends().contains(friend)) {
                     //add person to the loginUser's friend list
-                    loginUser.friends.add(friend);
+                    loginUser.addFriend(friend);
                 }
 
                 startActivity(new Intent(AddFriendActivity.this,

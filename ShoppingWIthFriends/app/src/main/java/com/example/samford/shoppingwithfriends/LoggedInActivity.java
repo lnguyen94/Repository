@@ -22,7 +22,7 @@ public class LoggedInActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_logged_in2);
+        setContentView(R.layout.activity_logged_in);
     }
 
     /**

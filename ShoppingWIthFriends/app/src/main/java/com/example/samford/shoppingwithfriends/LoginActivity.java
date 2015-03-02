@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.LoaderManager.LoaderCallbacks;
+import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
@@ -26,6 +27,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +57,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     private EditText mPasswordView;
     private View mProgressView;
     private View mLoginFormView;
-    Button mEmailSignInButton;
+    public Button mEmailSignInButton;
+    private Context context;
 
     /**
      * The login activity currently in use
@@ -352,6 +355,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         private String mName;
         private String mEmail;
         private String mPassword;
+        private Context context;
 
         UserLoginTask(String email, String password) {
             mEmail = email;
@@ -378,26 +382,47 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 return false;
             }
 
-            loginUser = new User(mName, mEmail, mPassword);
+            DatabaseHandler dbh = new DatabaseHandler(LoginActivity.this);
+
+            if (mName.equals("")) {
+                try {
+                    loginUser = dbh.login(mEmail, mPassword);
+                    return true;
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            else if (!mName.equals("")) {
+                //user is trying to register
+                try {
+                    User newUser = new User(mName, mEmail, mPassword);
+                    dbh.createUser(newUser);
+                    loginUser = dbh.login(mEmail, mPassword);
+                    return true;
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            return false;
+
+//            loginUser = new User(mName, mEmail, mPassword);
 //            loginUser.name = mName;
 //            loginUser.username = mEmail;
 //            loginUser.password = mPassword;
 
-
-
-            if (users.contains(loginUser)) { //checks email and password
-                Log.wtf("adsf", "already in system");
-
-                loginUser = users.get(users.indexOf(loginUser));
-                return true; //user is already in the system - will log in
-            }
-            else if (!loginUser.name.equals("")) { //name field is populated - want to register
-                loginUser.name = mName;
-                users.add(loginUser);
-                return true; //registers user and signs in
-            } else { //some kind of error
-                return false;
-            }
+//            if (users.contains(loginUser)) { //checks email and password
+//                Log.wtf("adsf", "already in system");
+//
+//                loginUser = users.get(users.indexOf(loginUser));
+//                return true; //user is already in the system - will log in
+//            }
+//            else if (!loginUser.getName().equals("") && mName.contains("?/@:;'[{()}]!#%^*")) { //name field is populated - want to register
+//                loginUser.setName(mName);
+//                users.add(loginUser);
+//                return true; //registers user and signs in
+//            } else { //some kind of error
+//                return false;
+//            }
 
         }
 

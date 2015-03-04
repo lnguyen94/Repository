@@ -68,7 +68,10 @@ public class AddFriendActivity extends ActionBarActivity {
 
                 if (!loginUser.getFriends().contains(friend)) {
                     //add person to the loginUser's friend list
-                    loginUser.addFriend(friend);
+                    DatabaseHandler dbh = new DatabaseHandler(AddFriendActivity.this);
+                    dbh.addFriend(loginUser.getEmail(), friend.getEmail());
+                    loginUser.setFriends(dbh.getFriends(loginUser.getEmail()));
+//                    loginUser.addFriend(friend);
                 }
 
                 startActivity(new Intent(AddFriendActivity.this,

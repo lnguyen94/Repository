@@ -77,9 +77,13 @@ public class AddItemActivity extends ActionBarActivity {
 
         // parse the int
         int price = Integer.parseInt(mPrice.getText().toString());
-        Item item = new Item(name, price);
+//        Item item = new Item(name, price);
         User loginUser = LoginActivity.getInstance().loginUser;
-        loginUser.addItem(item);
+
+        DatabaseHandler dbh = new DatabaseHandler(this);
+        dbh.addToWishlist(loginUser.getEmail(), name, price, 0, 0);
+        loginUser.setItems(dbh.getItems(loginUser.getEmail()));
+//        loginUser.addItem(item);
         startActivity(new Intent(this, FriendListActivity.class));
     }
 }

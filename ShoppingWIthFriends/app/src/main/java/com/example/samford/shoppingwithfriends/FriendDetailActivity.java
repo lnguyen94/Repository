@@ -78,7 +78,11 @@ public class FriendDetailActivity extends ActionBarActivity {
      * @param v The current view of the app
      */
     public void defriend(View v) {
-        LoginActivity.getInstance().loginUser.removeFriend(FriendListActivity.getInstance().selectedFriend);
+        User friend = FriendListActivity.getInstance().selectedFriend;
+        User loginUser = LoginActivity.getInstance().loginUser;
+        DatabaseHandler dbh = new DatabaseHandler(this);
+        dbh.removeFriend(loginUser.getEmail(), friend.getEmail());
+        loginUser.setFriends(dbh.getFriends(loginUser.getEmail()));
         startActivity(new Intent(this, FriendListActivity.class));
     }
 }

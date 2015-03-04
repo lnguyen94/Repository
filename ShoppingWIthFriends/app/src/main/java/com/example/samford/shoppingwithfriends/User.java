@@ -144,11 +144,11 @@ public class User {
      *
      * @param friend the friend to be added
      */
-    public void addFriend(User friend) {
-        DatabaseHandler dbh = new DatabaseHandler(LoginActivity.getInstance());
-        dbh.addFriend(LoginActivity.getInstance().loginUser.getEmail(), friend.getEmail());
-        this.friends = dbh.getFriends(LoginActivity.getInstance().loginUser.getEmail());
-    }
+//    public void addFriend(User friend) {
+//        DatabaseHandler dbh = new DatabaseHandler(AddFriendActivity.);
+//        dbh.addFriend(LoginActivity.getInstance().loginUser.getEmail(), friend.getEmail());
+//        this.friends = dbh.getFriends(LoginActivity.getInstance().loginUser.getEmail());
+//    }
 
     /**
      * Adds an item to their item list

@@ -6,53 +6,36 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
-import android.widget.ListView;
-
-import java.util.List;
+import android.widget.TextView;
 
 /**
- * Controller class to view the Item List
+ * Controller class to view the Friend Detail page
  *
  * @author Sam
  * @version 1.0
  */
-public class ItemListActivity extends ActionBarActivity {
+public class ItemDetailActivity extends ActionBarActivity {
 
-    private static final ItemListActivity instance = new ItemListActivity();
-    public static Item selectedItem = new Item();
-    public static ItemListActivity getInstance() {
-        return instance;
-    }
-
-    private ListAdapter mAdapter;
     /**
-     * Creates a new ItemListActivity
-     *
+     * Creates the FriendDetailActivity
      * @param savedInstanceState the saved state of the previous runtime
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_item_list);
+        setContentView(R.layout.activity_friend_detail);
 
-        final User loginUser = LoginActivity.getInstance().loginUser;
-        ListView list = (ListView) findViewById(R.id.item_list);
-        List<Item> items = loginUser.getItems();
-        mAdapter = new ArrayAdapter<Item>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, items);
+        Item item = ItemListActivity.getInstance().selectedItem;
 
-        list.setAdapter(mAdapter);
+//        TextView name = (TextView) findViewById(R.id.name);
+//        name.setText(friend.getName());
+//        TextView email = (TextView) findViewById(R.id.email);
+//        email.setText("Email: " + friend.getEmail());
+//        TextView rating = (TextView) findViewById(R.id.rating);
+//        rating.setText("Rating: " + friend.getAvgRating());
+//        TextView reports = (TextView) findViewById(R.id.reports);
+//        reports.setText("Reports: " + friend.getNumOfRatings());
 
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                selectedItem = (Item) parent.getItemAtPosition(position);
-            }
-        });
     }
 
     /**
@@ -65,12 +48,12 @@ public class ItemListActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_item_list, menu);
+        getMenuInflater().inflate(R.menu.menu_friend_detail, menu);
         return true;
     }
 
     /**
-     * Handles an item selected
+     * Handles an item selected from a menu
      *
      * @param item the item selected
      * @return boolean Return false to allow normal menu processing to
@@ -83,19 +66,25 @@ public class ItemListActivity extends ActionBarActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+        // noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
     /**
-     * Goes to the add item activity
+     * Removes a friend from the loginUser's friend list
      * @param v The current view of the app
      */
-    public void addItemClick(View v) {
-        startActivity(new Intent(this, AddItemActivity.class));
+    public void deleteItem(View v) {
+        Item item = ItemListActivity.getInstance().selectedItem;
+        User loginUser = LoginActivity.getInstance().loginUser;
+        DatabaseHandler dbh = new DatabaseHandler(this);
+        //
+        //need dbh method to remove item
+        //
+        loginUser.setFriends(dbh.getFriends(loginUser.getEmail()));
+        startActivity(new Intent(this, FriendListActivity.class));
     }
 }

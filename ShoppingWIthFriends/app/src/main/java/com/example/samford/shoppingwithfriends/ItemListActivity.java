@@ -51,6 +51,7 @@ public class ItemListActivity extends ActionBarActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 selectedItem = (Item) parent.getItemAtPosition(position);
+                startActivity(new Intent(ItemListActivity.this, ItemDetailActivity.class));
             }
         });
     }

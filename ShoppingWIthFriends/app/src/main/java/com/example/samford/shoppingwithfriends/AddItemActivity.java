@@ -17,6 +17,7 @@ import android.widget.EditText;
 public class AddItemActivity extends ActionBarActivity {
     private EditText mName;
     private EditText mPrice;
+    private EditText mMaxDist;
 
     /**
      * Creates the addItemActivity
@@ -29,6 +30,7 @@ public class AddItemActivity extends ActionBarActivity {
         setContentView(R.layout.activity_add_item);
         mName = (EditText) findViewById(R.id.name);
         mPrice = (EditText) findViewById(R.id.price);
+        mMaxDist = (EditText) findViewById(R.id.max_dist);
     }
 
     /**
@@ -72,16 +74,17 @@ public class AddItemActivity extends ActionBarActivity {
      *
      * @param v the current view of the app
      */
-    public void addItemClick(View v) {
+    public void addItem(View v) {
         String name = mName.getText().toString();
 
         // parse the int
-        int price = Integer.parseInt(mPrice.getText().toString());
+        double price = Double.parseDouble(mPrice.getText().toString());
+        int maxDist = Integer.parseInt(mMaxDist.getText().toString());
 //        Item item = new Item(name, price);
         User loginUser = LoginActivity.getInstance().loginUser;
 
         DatabaseHandler dbh = new DatabaseHandler(this);
-        dbh.addToWishlist(loginUser.getEmail(), name, price, 0, 0);
+        dbh.addToWishlist(loginUser.getEmail(), name, price, maxDist, 0);
         loginUser.setItems(dbh.getItems(loginUser.getEmail()));
 //        loginUser.addItem(item);
         startActivity(new Intent(this, FriendListActivity.class));

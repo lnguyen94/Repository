@@ -354,6 +354,27 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     /**
+     * Removes an item from the products table
+     *
+     * @param name the name of the product
+     * @param recommendee the email of the recommendee
+     * @param recommender the email of the recomender
+     * @return the number of rows removed, should be 1
+     */
+    public int removeFriend(String name, String recommendee,
+                            String recommender) {
+        SQLiteDatabase db = super.getWritableDatabase();
+        int toReturn = db.delete(TABLE_PRODUCTS, PRODUCTS_NAME
+                        + " = ? AND "
+                        + PRODUCTS_RECOMMENDEE
+                        + " = ? AND "
+                        + PRODUCTS_RECOMMENDER,
+                new String[]{name , recommendee, recommender});
+        db.close();
+        return toReturn;
+    }
+
+    /**
      * Populate a user's wishlist item with data
      *
      * @param item the Item to fill in data into the database
@@ -628,7 +649,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = super.getWritableDatabase();
         int toReturn = db.delete(TABLE_PRODUCTS, "date(" + PRODUCTS_SALEEND
                         + ") < date('now')",
-                new String[]{ });
+                new String[]{});
         db.close();
         return toReturn;
     }

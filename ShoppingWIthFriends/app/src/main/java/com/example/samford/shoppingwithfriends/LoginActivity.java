@@ -271,22 +271,24 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         }
     }
 
-    @Override
     /**
      * creates a loader
      * @param i the index of the bundle
      * @param bundle the bundle in use
      * @return where the cursor is currently
      */
+    @Override
     public Loader<Cursor> onCreateLoader(int i, Bundle bundle) {
         return new CursorLoader(this,
                 // Retrieve data rows for the device user's 'profile' contact.
                 Uri.withAppendedPath(ContactsContract.Profile.CONTENT_URI,
-                        ContactsContract.Contacts.Data.CONTENT_DIRECTORY), ProfileQuery.PROJECTION,
+                        ContactsContract.Contacts.Data.CONTENT_DIRECTORY),
+                ProfileQuery.PROJECTION,
 
                 // Select only email addresses.
-                ContactsContract.Contacts.Data.MIMETYPE +
-                        " = ?", new String[]{ContactsContract.CommonDataKinds.Email
+                ContactsContract.Contacts.Data.MIMETYPE
+                        + " = ?",
+                new String[]{ContactsContract.CommonDataKinds.Email
                 .CONTENT_ITEM_TYPE},
 
                 // Show primary email addresses first. Note that there won't be
@@ -294,12 +296,12 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
     }
 
-    @Override
     /**
      * handles the loader finishing
      * @param cursorLoader the load of the cursor
      * @param cursor where the cursor is
      */
+    @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
         List<String> emails = new ArrayList<String>();
         cursor.moveToFirst();
@@ -311,10 +313,10 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         addEmailsToAutoComplete(emails);
     }
 
-    @Override
     /**
      * handles the loader reseting
      */
+    @Override
     public void onLoaderReset(Loader<Cursor> cursorLoader) {
 
     }
@@ -331,7 +333,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
     /**
      * handles emails in the autocomplete
-     * @param emailAddressCollection
+     * @param emailAddressCollection all possible emails
      */
     private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
         //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
@@ -355,21 +357,33 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         private String mPassword;
         private Context context;
 
+        /**
+         * Create a user with an email and password
+         *
+         * @param email the email of the user
+         * @param password the password of the user
+         */
         UserLoginTask(String email, String password) {
             mEmail = email;
             mPassword = password;
         }
 
+        /**
+         * Create a user with name, email, and pass
+         * @param name name of the user
+         * @param email email of the user
+         * @param password password of the user
+         */
         UserLoginTask(String name, String email, String password) {
             mName = name;
             mEmail = email;
             mPassword = password;
         }
 
-        @Override
         /**
          * tries to log in the user in the background
          */
+        @Override
         protected Boolean doInBackground(Void... params) {
             // TODO: attempt authentication against a network service.
 
@@ -389,8 +403,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 } catch (SQLException e) {
                     e.printStackTrace();
                 }
-            }
-            else if (!mName.equals("")) {
+            } else if (!mName.equals("")) {
                 //user is trying to register
                 try {
                     User newUser = new User(mName, mEmail, mPassword);
@@ -413,21 +426,21 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 //
 //                loginUser = users.get(users.indexOf(loginUser));
 //                return true; //user is already in the system - will log in
-//            }
-//            else if (!loginUser.getName().equals("") && mName.contains("?/@:;'[{()}]!#%^*")) { //name field is populated - want to register
+//            } else if (!loginUser.getName().equals("")
+//                    && mName.contains("?/@:;'[{()}]!#%^*")) {
+//                name field is populated - want to register
 //                loginUser.setName(mName);
 //                users.add(loginUser);
 //                return true; //registers user and signs in
 //            } else { //some kind of error
 //                return false;
 //            }
-
         }
 
-        @Override
         /**
          * proceeds to the friend list on success or returns to the login screen on failed login
          */
+        @Override
         protected void onPostExecute(final Boolean success) {
 //            mAuthTask = null;
             showProgress(false);
@@ -448,10 +461,10 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
             }
         }
 
-        @Override
         /**
          * stops the progress
          */
+        @Override
         protected void onCancelled() {
             mAuthTask = null;
             showProgress(false);

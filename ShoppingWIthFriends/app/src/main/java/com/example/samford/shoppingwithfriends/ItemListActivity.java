@@ -23,6 +23,12 @@ public class ItemListActivity extends ActionBarActivity {
 
     private static final ItemListActivity instance = new ItemListActivity();
     public static Item selectedItem = new Item();
+
+    /**
+     * Gets the instance of this class
+     *
+     * @return the instance
+     */
     public static ItemListActivity getInstance() {
         return instance;
     }
@@ -48,10 +54,12 @@ public class ItemListActivity extends ActionBarActivity {
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent,
+                                    View view, int position, long id) {
 
                 selectedItem = (Item) parent.getItemAtPosition(position);
-                startActivity(new Intent(ItemListActivity.this, ItemDetailActivity.class));
+                startActivity(new Intent(ItemListActivity.this,
+                        ItemDetailActivity.class));
             }
         });
     }

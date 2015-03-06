@@ -23,7 +23,8 @@ public class WelcomeActivity extends ActionBarActivity {
      * @param v The current view of the app
      */
     public void loginClick(View v) {
-        startActivity(new Intent(WelcomeActivity.this, LoginActivity.class));
+
+        startActivity(new Intent(this, LoginActivity.class));
     }
 
     /**

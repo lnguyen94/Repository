@@ -36,19 +36,36 @@ public class AddFriendActivity extends ActionBarActivity {
         //users.remove(loginUser);
 
         final User loginUser = LoginActivity.getInstance().loginUser;
-        List<User> users = LoginActivity.getInstance().getUsers();
-        List<User> a = new ArrayList<>();
+        DatabaseHandler dbh = new DatabaseHandler(this);
+        List<String> usersEmail = dbh.getAllUsers();
+        usersEmail.remove(loginUser.getEmail());
+        List<String> friendEmails = new ArrayList<>();
+        List<User> users = new ArrayList<>();
 
-        for (User u : users) {
-            Log.wtf("-", u.toString());
-            // won't add users already there or
-            // the login user to the potential friend list
-            if (!loginUser.getFriends().contains(u) && !loginUser.equals(u)) {
-                a.add(u);
+
+        if (loginUser.getFriends() == null) {
+            List<User> temp = loginUser.getFriends();
+            for (User u : temp) {
+                friendEmails.add(u.getEmail());
+            }
+        } else {
+            for (User u : loginUser.getFriends()) {
+                friendEmails.add(u.getEmail());
             }
         }
+
+        for (String s : friendEmails) {
+            if (usersEmail.contains(s)) {
+                usersEmail.remove(s);
+            }
+        }
+
+        for (String u : usersEmail) {
+            users.add(dbh.getBasicUserData(u));
+        }
+
         ListAdapter mAdapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, a);
+                android.R.layout.simple_list_item_1, android.R.id.text1, users);
 
         list.setAdapter(mAdapter);
 

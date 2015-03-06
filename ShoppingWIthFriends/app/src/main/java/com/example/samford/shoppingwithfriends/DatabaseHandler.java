@@ -21,7 +21,7 @@ import java.util.List;
  */
 public class DatabaseHandler extends SQLiteOpenHelper {
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
 
     private static final String DATABASE_NAME = "ShoppingWithFriendsDB";
 
@@ -43,6 +43,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     private static final String FRIENDS_USER1 = "User1";
     private static final String FRIENDS_USER2 = "User2";
     private static final String FRIENDS_RATING = "Rating";
+    private static final String FRIENDS_ISREMOVED = "IsRemoved";
 
     // PRODUCTS Column Names
     private static final String PRODUCTS_NAME = "Name";
@@ -87,6 +88,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + FRIENDS_USER1 + " TEXT, "
                 + FRIENDS_USER2 + " TEXT, "
                 + FRIENDS_RATING + " INTEGER, "
+                + FRIENDS_ISREMOVED + " INTEGER, "
                 + "FOREIGN KEY (" + FRIENDS_USER1 + ") REFERENCES "
                 + TABLE_USERS + "(" + USERS_EMAIL + "),"
                 + "FOREIGN KEY (" + FRIENDS_USER2 + ") REFERENCES "
@@ -94,7 +96,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + "PRIMARY KEY ( "
                 + FRIENDS_USER1 + ", "
                 + FRIENDS_USER2 + ", "
-                + FRIENDS_RATING
+                + FRIENDS_RATING+ ", "
+                + FRIENDS_ISREMOVED
                 + "));");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_PRODUCTS + " ("
                 + PRODUCTS_NAME + " TEXT, "
@@ -248,7 +251,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                         + USERS_EMAIL + " IN (SELECT "
                         + FRIENDS_USER2 + " FROM "
                         + TABLE_FRIENDS + " WHERE "
-                        + FRIENDS_USER1 + " =?)",
+                        + FRIENDS_USER1 + " =? AND "
+                        + FRIENDS_ISREMOVED + " = '0')",
                 new String[]{email});
         if (friendCursor.moveToFirst()) {
             do {
@@ -294,14 +298,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 item.setPriceThresh(itemCursor.getDouble(8));
                 item.setMaxDistance(itemCursor.getInt(9));
                 item.setMinQuantRem(itemCursor.getInt(10));
-
-                SimpleDateFormat sdf = new SimpleDateFormat("MM-DD-YYYY");
-                try {
-                    Date strToDate = sdf.parse(itemCursor.getString(11));
-                    item.setSaleEndDate(strToDate);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                item.setSaleEndDate(new Date());
+//                SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+//                try {
+//                    Date strToDate = sdf.parse(itemCursor.getString(11));
+//                    item.setSaleEndDate(strToDate);
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                }
 
                 returnList.add(item);
             } while (itemCursor.moveToNext());
@@ -339,7 +343,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             ContentValues values = new ContentValues();
             values.put(PRODUCTS_RECOMMENDEE, recommendee);
             values.put(PRODUCTS_NAME, name);
-            values.put(PRODUCTS_PRICETHRESH, priceThresh);
+            values.put(PRODUCTS_PRICE, priceThresh);
             values.put(PRODUCTS_MAXDISTANCE, maxDistance);
             values.put(PRODUCTS_MINQUANTREM, minQuantRem);
 
@@ -351,27 +355,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             throw new UnsupportedOperationException(
                     "Already Wishlisted that product");
         }
-    }
-
-    /**
-     * Removes an item from the products table
-     *
-     * @param name the name of the product
-     * @param recommendee the email of the recommendee
-     * @param recommender the email of the recomender
-     * @return the number of rows removed, should be 1
-     */
-    public int removeFriend(String name, String recommendee,
-                            String recommender) {
-        SQLiteDatabase db = super.getWritableDatabase();
-        int toReturn = db.delete(TABLE_PRODUCTS, PRODUCTS_NAME
-                        + " = ? AND "
-                        + PRODUCTS_RECOMMENDEE
-                        + " = ? AND "
-                        + PRODUCTS_RECOMMENDER,
-                new String[]{name , recommendee, recommender});
-        db.close();
-        return toReturn;
     }
 
     /**
@@ -412,33 +395,56 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      * @return the row ID of the newly inserted row, or -1 if an error occurred
      */
     public long addFriend(String currUser, String friendToAdd) {
+        if (currUser == null || friendToAdd == null) {
+            throw new IllegalArgumentException("nulls");
+        }
         SQLiteDatabase db = super.getWritableDatabase();
 
         Cursor cursor = db.rawQuery("SELECT EXISTS ( SELECT 1 FROM "
                         + TABLE_FRIENDS + " WHERE " + FRIENDS_USER1
-                        + " =? AND " + FRIENDS_USER2 + " =? LIMIT 1)",
+                        + " =? AND " + FRIENDS_USER2 + " =? LIMIT 1 )",
                 new String[]{currUser, friendToAdd});
         if (cursor != null) {
             cursor.moveToFirst();
         }
         if (cursor.getInt(0) == 0) {
-            // If the product is not there
+            // If the friend is not there
             ContentValues values = new ContentValues();
             values.put(FRIENDS_USER1, currUser);
             values.put(FRIENDS_USER2, friendToAdd);
+            values.put(FRIENDS_ISREMOVED, 0);
 
-            long toReturn = db.insertOrThrow(TABLE_USERS, null, values);
+            long toReturn = db.insertOrThrow(TABLE_FRIENDS, null, values);
             db.close();
             cursor.close();
             return toReturn;
         } else {
-            throw new UnsupportedOperationException(
-                    "Already Added that friend");
+            Cursor cursor1 = db.rawQuery("SELECT EXISTS ( SELECT 1 FROM "
+                            + TABLE_FRIENDS + " WHERE " + FRIENDS_USER1
+                            + " =? AND " + FRIENDS_USER2 + " =? AND "
+                            + FRIENDS_ISREMOVED + " = '0' LIMIT 1 )",
+                    new String[]{currUser, friendToAdd});
+            if (cursor1 != null) {
+                cursor1.moveToFirst();
+            }
+            if (cursor1.getInt(0) == 0) {
+                ContentValues v = new ContentValues();
+                v.put(FRIENDS_ISREMOVED, 0);
+                int toReturn = db.update(TABLE_FRIENDS, v,
+                        FRIENDS_USER1 + " =? AND " + FRIENDS_USER2
+                                + " =? AND " + FRIENDS_ISREMOVED + " = '1'",
+                        new String[]{currUser, friendToAdd});
+                db.close();
+                return toReturn;
+            } else {
+                throw new UnsupportedOperationException(
+                        "Already Added that friend");
+            }
         }
     }
 
     /**
-     * Remove a friend relation from the FRIENDS table
+     * Update a friend relation from the FRIENDS table to isReomved = 1
      *
      * @param currUser the user who defriending the other user
      * @param friendToRemove the user being defriended
@@ -446,8 +452,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      */
     public int removeFriend(String currUser, String friendToRemove) {
         SQLiteDatabase db = super.getWritableDatabase();
-        int toReturn = db.delete(TABLE_FRIENDS, FRIENDS_USER1 + " = ? AND "
-                        + FRIENDS_USER2 + " = ? ",
+        ContentValues v = new ContentValues();
+        v.put(FRIENDS_ISREMOVED, 1);
+        int toReturn = db.update(TABLE_FRIENDS, v,
+                FRIENDS_USER1 + " =? AND " + FRIENDS_USER2
+                        + " =? AND " + FRIENDS_ISREMOVED + " = '0'",
                 new String[]{currUser, friendToRemove});
         db.close();
         return toReturn;
@@ -615,7 +624,8 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         v.put(FRIENDS_RATING, rating);
 
         int returnInt = db.update(TABLE_FRIENDS, v, FRIENDS_USER1
-                        + " = ? AND " + FRIENDS_USER2 + " = ? ",
+                        + " = ? AND " + FRIENDS_USER2
+                        + " = ? AND " + FRIENDS_ISREMOVED + " = 0",
                 new String[] {user1, user2});
         db.close();
         return returnInt;

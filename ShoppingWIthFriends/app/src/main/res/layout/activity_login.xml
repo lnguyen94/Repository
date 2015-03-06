@@ -7,7 +7,7 @@
     android:paddingTop="@dimen/activity_vertical_margin" tools:context=".LoginActivity"
     android:id="@+id/Login_layout"
     android:weightSum="1"
-    android:onClick="cancelClick">
+    >
 
     <!-- Login progress -->
     <ProgressBar android:id="@+id/login_progress" style="?android:attr/progressBarStyleLarge"
@@ -70,14 +70,6 @@
         android:layout_width="333dp" android:layout_height="wrap_content"
         android:layout_marginTop="16dp" android:text="Need to Register?"
         android:textStyle="bold" />
-
-    <Button
-        android:layout_width="337dp"
-        android:layout_height="wrap_content"
-        android:text="Cancel"
-        android:onClick="cancelClick"
-        android:id="@+id/cancelButton"
-        android:layout_marginTop="230dp"/>
 
 
 </LinearLayout>

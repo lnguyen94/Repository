@@ -11,86 +11,6 @@ import java.util.ArrayList;
  */
 public class User {
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public int getAvgRating() {
-        return avgRating;
-    }
-
-    public void setAvgRating(int avgRating) {
-        this.avgRating = avgRating;
-    }
-
-    public int getNumOfRatings() {
-        return numOfRatings;
-    }
-
-    public void setNumOfRatings(int numOfRatings) {
-        this.numOfRatings = numOfRatings;
-    }
-
-    public double getLastLocLat() {
-        return lastLocLat;
-    }
-
-    public void setLastLocLat(double lastLocLat) {
-        this.lastLocLat = lastLocLat;
-    }
-
-    public double getLastLocLong() {
-        return lastLocLong;
-    }
-
-    public void setLastLocLong(double lastLocLong) {
-        this.lastLocLong = lastLocLong;
-    }
-
-    public ArrayList<User> getFriends() {
-        return friends;
-    }
-
-    public void setFriends(ArrayList<User> friends) {
-        this.friends = friends;
-    }
-
-    public ArrayList<Item> getItems() {
-        return items;
-    }
-
-    public void setItems(ArrayList<Item> items) {
-        this.items = items;
-    }
-
-    public double getPriceThresh() {
-        return priceThresh;
-    }
-
-    public void setPriceThresh(double priceThresh) {
-        this.priceThresh = priceThresh;
-    }
-
     private String email;
     private String name;
     private String password;
@@ -118,12 +38,6 @@ public class User {
         this.name = name;
     }
 
-//    public User(String name, String email, String password, int avgRating, int numOfRatings, int lastLocLat, int lastLocLong) {
-//        this.name = name;
-//        this.email = email;
-//        this.password = password;
-//    }
-
     /**
      * Create a User with user name and password
      * @param email the user name of the user
@@ -140,17 +54,6 @@ public class User {
     }
 
     /**
-     * Mechanic for adding friends
-     *
-     * @param friend the friend to be added
-     */
-//    public void addFriend(User friend) {
-//        DatabaseHandler dbh = new DatabaseHandler(AddFriendActivity.);
-//        dbh.addFriend(LoginActivity.getInstance().loginUser.getEmail(), friend.getEmail());
-//        this.friends = dbh.getFriends(LoginActivity.getInstance().loginUser.getEmail());
-//    }
-
-    /**
      * Adds an item to their item list
      *
      * @param item the item to be added
@@ -159,12 +62,203 @@ public class User {
         this.items.add(item);
     }
 
+    /**
+     * Remove the item from the user's items
+     *
+     * @param item the item to remove
+     */
     public void removeItem(Item item) {
         this.items.remove(item);
     }
 
+    /**
+     * Remove a friend from the user's friends
+     *
+     * @param friend the friend to remove
+     */
     public void removeFriend(User friend) {
         this.friends.remove(friend);
+    }
+
+
+    /**
+     * Get the email
+     *
+     * @return the email
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * Set the email of the user
+     *
+     * @param email the email to change
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    /**
+     * Set the name of the user
+     *
+     * @return the name of the user
+     */
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Set the name of the user
+     *
+     * @param name the name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    /**
+     * Return the password
+     *
+     * @return the password
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * Set the password of the user
+     *
+     * @param password the new password
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    /**
+     * Get the average rating of the user
+     *
+     * @return the user's average rating
+     */
+    public int getAvgRating() {
+        return avgRating;
+    }
+
+    /**
+     * set the average rating of the user
+     *
+     * @param avgRating the new average rating
+     */
+    public void setAvgRating(int avgRating) {
+        this.avgRating = avgRating;
+    }
+
+    /**
+     * Get the number of ratings
+     *
+     * @return the number of ratings
+     */
+    public int getNumOfRatings() {
+        return numOfRatings;
+    }
+
+    /**
+     * Set the number of ratings of a user
+     *
+     * @param numOfRatings the new number of ratings
+     */
+    public void setNumOfRatings(int numOfRatings) {
+        this.numOfRatings = numOfRatings;
+    }
+
+    /**
+     * Get the last location of the user - latitude
+     *
+     * @return the last location of the user - latitude
+     */
+    public double getLastLocLat() {
+        return lastLocLat;
+    }
+
+    /**
+     * Set the last location of the user - latitude
+     *
+     * @param lastLocLat the new location of the user - latitude
+     */
+    public void setLastLocLat(double lastLocLat) {
+        this.lastLocLat = lastLocLat;
+    }
+
+    /**
+     * Gets the last location of the user - longitude
+     *
+     * @return the last location of the user - longitude
+     */
+    public double getLastLocLong() {
+        return lastLocLong;
+    }
+
+    /**
+     * Set the last location of the user - longitude
+     *
+     * @param lastLocLong the last location of the user - longitude
+     */
+    public void setLastLocLong(double lastLocLong) {
+        this.lastLocLong = lastLocLong;
+    }
+
+    /**
+     * Gets the friends of the users
+     *
+     * @return the friends of the users
+     */
+    public ArrayList<User> getFriends() {
+        return friends;
+    }
+
+    /**
+     * Sets the list of the friends for the user
+     *
+     * @param friends the new set of friends
+     */
+    public void setFriends(ArrayList<User> friends) {
+        this.friends = friends;
+    }
+
+    /**
+     * Gets the Items of the user
+     *
+     * @return the Items of the user
+     */
+    public ArrayList<Item> getItems() {
+        return items;
+    }
+
+    /**
+     * Sets the items of the user
+     *
+     * @param items the items of the user
+     */
+    public void setItems(ArrayList<Item> items) {
+        this.items = items;
+    }
+
+    /**
+     * Gets the price threshold of the user
+     *
+     * @return the price threshold of the user
+     */
+    public double getPriceThresh() {
+        return priceThresh;
+    }
+
+    /**
+     * Sets the price threshold of the user
+     *
+     * @param priceThresh the price threshold of the user
+     */
+    public void setPriceThresh(double priceThresh) {
+        this.priceThresh = priceThresh;
     }
 
     /**
@@ -191,6 +285,6 @@ public class User {
      */
     @Override
     public String toString() {
-        return this.name + " " + this.email + " " + this.password;
+        return this.name + " (" + this.email + ")";
     }
 }

@@ -4,9 +4,11 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Context;
 import android.content.CursorLoader;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.Loader;
 import android.database.Cursor;
@@ -15,7 +17,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.ContactsContract;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -35,11 +36,6 @@ import java.util.List;
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
-
-    /**
-     * A dummy authentication store containing known user names and passwords.
-     */
-    public static ArrayList<User> users = new ArrayList<>();
 
     /**
      * the user that is logged in
@@ -74,40 +70,12 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     }
 
     /**
-     * get list of users
-     * @return list of users
-     */
-    public ArrayList<User> getUsers() {
-        return users;
-    }
-
-    /**
-     * returns to the welcome screen on cancel
-     * @param v the current view
-     */
-    public void cancelClick(View v) {
-        startActivity(new Intent(this, WelcomeActivity.class));
-    }
-
-    /**
      * the setup of the view
      * @param savedInstanceState current state of the application
      */
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
-        List<String> startUsers = new ArrayList<>();
-        DatabaseHandler dbh = new DatabaseHandler(this);
-
-        startUsers = dbh.getAllUsers();
-//
-        for (String u : startUsers) {
-            User friend = dbh.getBasicUserData(u);
-            if (!users.contains(friend)) {
-                users.add(friend);
-            }
-        }
 
         // Set up the login form.
         mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
@@ -118,16 +86,16 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         mPasswordView = (EditText) findViewById(R.id.password);
         mPasswordView.setOnEditorActionListener(
                 new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView textView, int id,
-                                          KeyEvent keyEvent) {
-                if (id == R.id.login || id == EditorInfo.IME_NULL) {
-                    attemptLogin();
-                    return true;
-                }
-                return false;
-            }
-        });
+                    @Override
+                    public boolean onEditorAction(TextView textView, int id,
+                                                  KeyEvent keyEvent) {
+                        if (id == R.id.login || id == EditorInfo.IME_NULL) {
+                            attemptLogin();
+                            return true;
+                        }
+                        return false;
+                    }
+                });
 
         mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
@@ -150,7 +118,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 //change name to register
                 TextView t = (TextView) findViewById(R.id.title);
                 t.setText("Register");
-                Log.wtf("asdf", t.getText().toString());
 
                 mEmailSignInButton.setText("Register");
 
@@ -195,7 +162,8 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
         // Check for a valid password, if the user entered one.
 //        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-//            mPasswordView.setError(getString(R.string.error_invalid_password));
+//            mPasswordView.setError(
+//                getString(R.string.error_invalid_password));
 //            focusView = mPasswordView;
 //            cancel = true;
 //        }
@@ -244,23 +212,24 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
         // for very easy animations. If available, use these APIs to fade-in
         // the progress spinner.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR2) {
-            int shortAnimTime = getResources().getInteger(android.R.integer.config_shortAnimTime);
+            int shortAnimTime = getResources().getInteger(
+                    android.R.integer.config_shortAnimTime);
 
             mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
-            mLoginFormView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
+            mLoginFormView.animate().setDuration(shortAnimTime).alpha(show ? 0 : 1).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    mLoginFormView.setVisibility(show ? View.GONE : View.VISIBLE);
+                    mLoginFormView.setVisibility(
+                            show ? View.GONE : View.VISIBLE);
                 }
             });
 
             mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
-            mProgressView.animate().setDuration(shortAnimTime).alpha(
-                    show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
+            mProgressView.animate().setDuration(shortAnimTime).alpha(show ? 1 : 0).setListener(new AnimatorListenerAdapter() {
                 @Override
                 public void onAnimationEnd(Animator animation) {
-                    mProgressView.setVisibility(show ? View.VISIBLE : View.GONE);
+                    mProgressView.setVisibility(
+                            show ? View.VISIBLE : View.GONE);
                 }
             });
         } else {
@@ -288,8 +257,9 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
                 // Select only email addresses.
                 ContactsContract.Contacts.Data.MIMETYPE
                         + " = ?",
-                new String[]{ContactsContract.CommonDataKinds.Email
-                .CONTENT_ITEM_TYPE},
+                new String[]{
+                    ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE
+                },
 
                 // Show primary email addresses first. Note that there won't be
                 // a primary email address if the user hasn't specified one.
@@ -303,14 +273,6 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
      */
     @Override
     public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> emails = new ArrayList<String>();
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            emails.add(cursor.getString(ProfileQuery.ADDRESS));
-            cursor.moveToNext();
-        }
-
-        addEmailsToAutoComplete(emails);
     }
 
     /**
@@ -322,8 +284,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     }
 
     private interface ProfileQuery {
-        String[] PROJECTION = {
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
+        String[] PROJECTION = {ContactsContract.CommonDataKinds.Email.ADDRESS,
                 ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
         };
 
@@ -332,46 +293,30 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
     }
 
     /**
-     * handles emails in the autocomplete
-     * @param emailAddressCollection all possible emails
-     */
-    private void addEmailsToAutoComplete(List<String> emailAddressCollection) {
-        //Create adapter to tell the AutoCompleteTextView what to show in its dropdown list.
-        ArrayAdapter<String> adapter =
-                new ArrayAdapter<String>(LoginActivity.this,
-                        android.R.layout.simple_dropdown_item_1line, emailAddressCollection);
-
-        mEmailView.setAdapter(adapter);
-    }
-
-    /**
      * Represents an asynchronous login/registration task used to authenticate
      * the user.
      */
     public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-//        public User loginUser;
-
         private String mName;
         private String mEmail;
         private String mPassword;
-        private Context context;
+        private String errorMessage;
 
         /**
          * Create a user with an email and password
          *
-         * @param email the email of the user
+         * @param email    the email of the user
          * @param password the password of the user
          */
         UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
+            this("", email, password);
         }
 
         /**
          * Create a user with name, email, and pass
-         * @param name name of the user
-         * @param email email of the user
+         *
+         * @param name     name of the user
+         * @param email    email of the user
          * @param password password of the user
          */
         UserLoginTask(String name, String email, String password) {
@@ -396,68 +341,80 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
             DatabaseHandler dbh = new DatabaseHandler(LoginActivity.this);
 
-            if (mName.equals("")) {
+                if (mName.equals("")) {
                 try {
                     loginUser = dbh.login(mEmail, mPassword);
+                    this.errorMessage = null;
                     return true;
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    this.errorMessage = e.toString();
+                    return false;
                 }
             } else if (!mName.equals("")) {
-                //user is trying to register
+                // User is trying to register
                 try {
                     User newUser = new User(mName, mEmail, mPassword);
                     dbh.createUser(newUser);
                     loginUser = dbh.login(mEmail, mPassword);
+                    this.errorMessage = null;
                     return true;
                 } catch (SQLException e) {
-                    e.printStackTrace();
+                    this.errorMessage = e.toString();
+                    return false;
+                } catch (UnsupportedOperationException ex) {
+                    this.errorMessage = ex.getMessage();
+                    return false;
                 }
             }
             return false;
-
-//            loginUser = new User(mName, mEmail, mPassword);
-//            loginUser.name = mName;
-//            loginUser.username = mEmail;
-//            loginUser.password = mPassword;
-
-//            if (users.contains(loginUser)) { //checks email and password
-//                Log.wtf("adsf", "already in system");
-//
-//                loginUser = users.get(users.indexOf(loginUser));
-//                return true; //user is already in the system - will log in
-//            } else if (!loginUser.getName().equals("")
-//                    && mName.contains("?/@:;'[{()}]!#%^*")) {
-//                name field is populated - want to register
-//                loginUser.setName(mName);
-//                users.add(loginUser);
-//                return true; //registers user and signs in
-//            } else { //some kind of error
-//                return false;
-//            }
         }
 
         /**
-         * proceeds to the friend list on success or returns to the login screen on failed login
+         * proceeds to the friend list on success
+         * or returns to the login screen on failed login
          */
         @Override
         protected void onPostExecute(final Boolean success) {
-//            mAuthTask = null;
             showProgress(false);
 
-
             if (success) {
-                Log.wtf("loginuser", loginUser.toString());
-                startActivity(new Intent(LoginActivity.this, LoggedInActivity.class));
-//                finish();
+                startActivity(new Intent(
+                        LoginActivity.this, LoggedInActivity.class));
+                finish();
             } else {
-//                mPasswordView.setError(getString(R.string.error_incorrect_password));
-//                mPasswordView.requestFocus();
-                startActivity(new Intent(LoginActivity.this, LoginActivity.class));
-//                onCreate(new Bundle());
+                AlertDialog.Builder adb =
+                        new AlertDialog.Builder(LoginActivity.this);
 
-//                finish();
+                if (mName == "") {
+                    adb.setMessage(this.errorMessage
+                            + "\n\nRegister different user? or Sign in?");
+                    adb.setPositiveButton("Sign in", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int id) {
+                            UserLoginTask task =
+                                    new UserLoginTask(mEmail, mPassword);
+                            task.execute();
+                        }
+                    });
+                    adb.setNegativeButton("Register different user",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                                    int id) {
+                                    finish();
+                                }
+                            });
+                } else {
+                    adb.setMessage(this.errorMessage);
+                    adb.setNeutralButton("Try again",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog,
+                                                    int id) {
+                                    finish();
+                                }
+                            });
+                }
 
+                AlertDialog ad = adb.create();
+                ad.show();
             }
         }
 

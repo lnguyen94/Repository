@@ -12,7 +12,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
-
 import java.util.List;
 
 /**
@@ -54,7 +53,6 @@ public class FriendListActivity extends ActionBarActivity {
                 android.R.id.text1, friends);
 
         list.setAdapter(mAdapter);
-
 
         list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -103,14 +101,6 @@ public class FriendListActivity extends ActionBarActivity {
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * Returns to the welcome screen on click
-     * @param v The current view of the app
-     */
-    public void logoutClick(View v) {
-        startActivity(new Intent(this, WelcomeActivity.class));
     }
 
     /**

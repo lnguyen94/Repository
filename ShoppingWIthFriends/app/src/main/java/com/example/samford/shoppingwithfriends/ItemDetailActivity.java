@@ -85,6 +85,6 @@ public class ItemDetailActivity extends ActionBarActivity {
         //need dbh method to remove item
         //
         loginUser.setFriends(dbh.getFriends(loginUser.getEmail()));
-        startActivity(new Intent(this, FriendListActivity.class));
+        startActivity(new Intent(this, ItemListActivity.class));
     }
 }

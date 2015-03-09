@@ -30,6 +30,15 @@ public class AddFriendActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+    }
+
+    /**
+     * resumes
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
         setContentView(R.layout.activity_add_friend);
 
         ListView list = (ListView) findViewById(R.id.friend_list);
@@ -91,8 +100,9 @@ public class AddFriendActivity extends ActionBarActivity {
 //                    loginUser.addFriend(friend);
                 }
 
-                startActivity(new Intent(AddFriendActivity.this,
-                        FriendListActivity.class));
+//                startActivity(new Intent(AddFriendActivity.this,
+//                        FriendListActivity.class));
+                finish();
             }
         });
     }

@@ -341,7 +341,7 @@ public class LoginActivity extends Activity implements LoaderCallbacks<Cursor> {
 
             DatabaseHandler dbh = new DatabaseHandler(LoginActivity.this);
 
-                if (mName.equals("")) {
+            if (mName.equals("")) {
                 try {
                     loginUser = dbh.login(mEmail, mPassword);
                     this.errorMessage = null;

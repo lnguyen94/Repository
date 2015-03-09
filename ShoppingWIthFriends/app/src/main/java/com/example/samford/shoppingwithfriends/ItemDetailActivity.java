@@ -17,24 +17,22 @@ import android.widget.TextView;
 public class ItemDetailActivity extends ActionBarActivity {
 
     /**
-     * Creates the FriendDetailActivity
+     * Creates the ItemDetailActivity
      * @param savedInstanceState the saved state of the previous runtime
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_friend_detail);
+        setContentView(R.layout.activity_item_detail);
 
         Item item = ItemListActivity.getInstance().selectedItem;
 
-//        TextView name = (TextView) findViewById(R.id.name);
-//        name.setText(friend.getName());
-//        TextView email = (TextView) findViewById(R.id.email);
-//        email.setText("Email: " + friend.getEmail());
-//        TextView rating = (TextView) findViewById(R.id.rating);
-//        rating.setText("Rating: " + friend.getAvgRating());
-//        TextView reports = (TextView) findViewById(R.id.reports);
-//        reports.setText("Reports: " + friend.getNumOfRatings());
+        TextView name = (TextView) findViewById(R.id.name);
+        name.setText("Name: " + item.getName());
+        TextView price = (TextView) findViewById(R.id.price);
+        price.setText("Price: " + item.getPrice());
+        TextView distance = (TextView) findViewById(R.id.distance);
+        distance.setText("Distance: " + item.getMaxDistance());
 
     }
 
@@ -48,7 +46,7 @@ public class ItemDetailActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_friend_detail, menu);
+        getMenuInflater().inflate(R.menu.menu_item_detail, menu);
         return true;
     }
 
@@ -74,17 +72,18 @@ public class ItemDetailActivity extends ActionBarActivity {
     }
 
     /**
-     * Removes a friend from the loginUser's friend list
+     * Removes a friend from the loginUser's item list
      * @param v The current view of the app
      */
-    public void deleteItem(View v) {
-        Item item = ItemListActivity.getInstance().selectedItem;
-        User loginUser = LoginActivity.getInstance().loginUser;
-        DatabaseHandler dbh = new DatabaseHandler(this);
-        //
-        //need dbh method to remove item
-        //
-        loginUser.setFriends(dbh.getFriends(loginUser.getEmail()));
+    public void removeItem(View v) {
+//        Item item = ItemListActivity.getInstance().selectedItem;
+//        User loginUser = LoginActivity.getInstance().loginUser;
+//        DatabaseHandler dbh = new DatabaseHandler(this);
+//        //
+//        //need dbh method to remove item
+//        //
+//        loginUser.setFriends(dbh.getFriends(loginUser.getEmail()));
+//        loginUser.setItems(dbh.getItems(loginUser.getEmail()));
         startActivity(new Intent(this, ItemListActivity.class));
     }
 }

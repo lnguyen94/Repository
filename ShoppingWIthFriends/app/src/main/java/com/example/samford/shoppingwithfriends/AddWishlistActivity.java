@@ -14,7 +14,7 @@ import android.widget.EditText;
  * @author Sam
  * @version 1.0
  */
-public class AddItemActivity extends ActionBarActivity {
+public class AddWishlistActivity extends ActionBarActivity {
     private EditText mName;
     private EditText mPrice;
     private EditText mMaxDist;
@@ -85,7 +85,7 @@ public class AddItemActivity extends ActionBarActivity {
 
         DatabaseHandler dbh = new DatabaseHandler(this);
         dbh.addToWishlist(loginUser.getEmail(), name, price, maxDist, 0);
-        loginUser.setItems(dbh.getItems(loginUser.getEmail()));
+        loginUser.setWishList(dbh.getItems(loginUser.getEmail()));
 //        loginUser.addItem(item);
         startActivity(new Intent(this, ItemListActivity.class));
     }

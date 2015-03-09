@@ -38,7 +38,7 @@
             android:label="@string/title_activity_friend_detail" >
         </activity>
         <activity
-            android:name=".AddItemActivity"
+            android:name=".AddWishlistActivity"
             android:label="@string/title_activity_add_item" >
         </activity>
         <activity
@@ -48,6 +48,10 @@
         <activity
             android:name=".ItemDetailActivity"
             android:label="@string/title_activity_item_detail" >
+        </activity>
+        <activity
+            android:name=".DealsActivity"
+            android:label="@string/title_activity_deals" >
         </activity>
     </application>
 

@@ -1,5 +1,7 @@
 package com.example.samford.shoppingwithfriends;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 
 /**
@@ -20,7 +22,8 @@ public class User {
     private double lastLocLong;
     private double priceThresh;
     private ArrayList<User> friends = new ArrayList<>();
-    private ArrayList<Item> items = new ArrayList<>();
+    private ArrayList<Item> wishList = new ArrayList<>();
+    private ArrayList<Item> reportedItems = new ArrayList<>();
 
     /**
      * Create an empty user
@@ -58,8 +61,8 @@ public class User {
      *
      * @param item the item to be added
      */
-    public void addItem(Item item) {
-        this.items.add(item);
+    public void addWish(Item item) {
+        this.wishList.add(item);
     }
 
     /**
@@ -67,8 +70,8 @@ public class User {
      *
      * @param item the item to remove
      */
-    public void removeItem(Item item) {
-        this.items.remove(item);
+    public void removeWish(Item item) {
+        this.wishList.remove(item);
     }
 
     /**
@@ -78,6 +81,15 @@ public class User {
      */
     public void removeFriend(User friend) {
         this.friends.remove(friend);
+    }
+
+    /**
+     * Remove a friend from the user's friends
+     *
+     * @param friend the friend to remove
+     */
+    public void addFriend(User friend, Context context) {
+
     }
 
 
@@ -230,8 +242,8 @@ public class User {
      *
      * @return the Items of the user
      */
-    public ArrayList<Item> getItems() {
-        return items;
+    public ArrayList<Item> getWishList() {
+        return wishList;
     }
 
     /**
@@ -239,8 +251,8 @@ public class User {
      *
      * @param items the items of the user
      */
-    public void setItems(ArrayList<Item> items) {
-        this.items = items;
+    public void setWishList(ArrayList<Item> items) {
+        this.wishList = items;
     }
 
     /**

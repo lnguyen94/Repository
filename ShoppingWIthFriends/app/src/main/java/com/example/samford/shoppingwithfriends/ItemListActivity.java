@@ -34,6 +34,7 @@ public class ItemListActivity extends ActionBarActivity {
     }
 
     private ListAdapter mAdapter;
+    private ListAdapter dAdapter;
     /**
      * Creates a new ItemListActivity
      *
@@ -45,14 +46,40 @@ public class ItemListActivity extends ActionBarActivity {
         setContentView(R.layout.activity_item_list);
 
         final User loginUser = LoginActivity.getInstance().loginUser;
-        ListView list = (ListView) findViewById(R.id.item_list);
-        List<Item> items = loginUser.getItems();
-        mAdapter = new ArrayAdapter<Item>(this,
+
+        ListView dealsList = (ListView) findViewById(R.id.deals_list);
+
+        //need to get all items and filter out all the ones that are < the threshhold
+        List<Item> items = loginUser.getWishList();
+
+        dAdapter = new ArrayAdapter<Item>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, items);
 
-        list.setAdapter(mAdapter);
+        dealsList.setAdapter(dAdapter);
 
-        list.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        dealsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent,
+                                    View view, int position, long id) {
+
+                selectedItem = (Item) parent.getItemAtPosition(position);
+                startActivity(new Intent(ItemListActivity.this,
+                        ItemDetailActivity.class));
+            }
+        });
+
+
+
+
+
+        ListView wishlist = (ListView) findViewById(R.id.item_list);
+        List<Item> items2 = loginUser.getWishList();
+        mAdapter = new ArrayAdapter<Item>(this,
+                android.R.layout.simple_list_item_1, android.R.id.text1, items2);
+
+        wishlist.setAdapter(mAdapter);
+
+        wishlist.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent,
                                     View view, int position, long id) {
@@ -105,6 +132,6 @@ public class ItemListActivity extends ActionBarActivity {
      * @param v The current view of the app
      */
     public void addItemClick(View v) {
-        startActivity(new Intent(this, AddItemActivity.class));
+        startActivity(new Intent(this, AddWishlistActivity.class));
     }
 }

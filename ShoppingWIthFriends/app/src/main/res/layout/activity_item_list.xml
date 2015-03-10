@@ -48,7 +48,7 @@
     <Button
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="Add to Wishlist"
+        android:text="Report an Item"
         android:id="@+id/report_item"
         android:onClick="reportItemClick"
         android:layout_alignParentStart="true" />

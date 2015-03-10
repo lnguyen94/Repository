@@ -375,9 +375,9 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         v.put(PRODUCTS_QUANTREM, item.getQuantRem());
         v.put(PRODUCTS_STORE, item.getStore());
 
-        SimpleDateFormat df = new SimpleDateFormat("MM-DD-YYYY");
-        String endDate = df.format(item.getSaleEndDate());
-        v.put(PRODUCTS_SALEEND, endDate);
+//        SimpleDateFormat df = new SimpleDateFormat("MM-DD-YYYY");
+//        String endDate = df.format(item.getSaleEndDate());
+//        v.put(PRODUCTS_SALEEND, endDate);
 
         int returnInt = db.update(TABLE_PRODUCTS, v, PRODUCTS_RECOMMENDEE
                         + " = ? AND " + PRODUCTS_NAME + " = ? ",
@@ -555,13 +555,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 item.setMaxDistance(itemCursor.getInt(9));
                 item.setMinQuantRem(itemCursor.getInt(10));
 
-                SimpleDateFormat sdf = new SimpleDateFormat("MM-DD-YYYY");
-                try {
-                    Date strToDate = sdf.parse(itemCursor.getString(11));
-                    item.setSaleEndDate(strToDate);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+//                SimpleDateFormat sdf = new SimpleDateFormat("MM-DD-YYYY");
+//                try {
+//                    Date strToDate = sdf.parse(itemCursor.getString(11));
+//                    item.setSaleEndDate(strToDate);
+//                } catch (ParseException e) {
+//                    e.printStackTrace();
+//                }
 
                 returnList.add(item);
             } while (itemCursor.moveToNext());

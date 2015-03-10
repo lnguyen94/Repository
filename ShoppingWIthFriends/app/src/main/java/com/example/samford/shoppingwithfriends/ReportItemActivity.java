@@ -8,6 +8,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 
+import java.sql.SQLException;
+
 /**
  * Controller class to add an item
  *
@@ -65,7 +67,6 @@ public class ReportItemActivity extends ActionBarActivity {
         if (id == R.id.action_settings) {
             return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -85,7 +86,11 @@ public class ReportItemActivity extends ActionBarActivity {
         Item item = new Item(name, price);
         item.setMaxDistance(maxDist);
         DatabaseHandler dbh = new DatabaseHandler(this);
-        dbh.reportProduct(item, loginUser.getEmail());
+        try {
+            dbh.reportProduct(item, loginUser.getEmail());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 //        loginUser.setWishList(dbh.getItems(loginUser.getEmail()));
 //        loginUser.addItem(item);
         startActivity(new Intent(this, ItemListActivity.class));

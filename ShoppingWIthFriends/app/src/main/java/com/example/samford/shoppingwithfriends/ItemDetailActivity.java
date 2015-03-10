@@ -76,14 +76,16 @@ public class ItemDetailActivity extends ActionBarActivity {
      * @param v The current view of the app
      */
     public void removeItem(View v) {
-//        Item item = ItemListActivity.getInstance().selectedItem;
-//        User loginUser = LoginActivity.getInstance().loginUser;
-//        DatabaseHandler dbh = new DatabaseHandler(this);
+        Item selectedItem = ItemListActivity.getInstance().selectedItem;
+        User loginUser = LoginActivity.getInstance().loginUser;
+        DatabaseHandler dbh = new DatabaseHandler(this);
 //        //
 //        //need dbh method to remove item
 //        //
-//        loginUser.setFriends(dbh.getFriends(loginUser.getEmail()));
-//        loginUser.setItems(dbh.getItems(loginUser.getEmail()));
+
+
+        dbh.removeItem(loginUser.getEmail(), selectedItem);
+        loginUser.setWishList(dbh.getItems(loginUser.getEmail()));
         startActivity(new Intent(this, ItemListActivity.class));
     }
 }

@@ -357,6 +357,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         }
     }
 
+
     /**
      * Populate a user's wishlist item with data
      *
@@ -364,7 +365,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      * @param recommender the email of the person recommending it
      * @return the number of rows affected, which should be 1
      */
-    public int reportProduct(Item item, String recommender) {
+    public int reportToFriend(Item item, String recommender) {
         SQLiteDatabase db = super.getWritableDatabase();
 
         ContentValues v = new ContentValues();
@@ -458,6 +459,20 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 FRIENDS_USER1 + " =? AND " + FRIENDS_USER2
                         + " =? AND " + FRIENDS_ISREMOVED + " = '0'",
                 new String[]{currUser, friendToRemove});
+        db.close();
+        return toReturn;
+    }
+
+    /**
+     *
+     * @param currUser
+     * @param item
+     * @return
+     */
+    public int removeItem(String currUser, Item item) {
+        SQLiteDatabase db = super.getWritableDatabase();
+        int toReturn = db.delete(TABLE_PRODUCTS, PRODUCTS_NAME + " =? AND " + PRODUCTS_RECOMMENDEE + " =? ",
+                new String[] {item.getName(), currUser});
         db.close();
         return toReturn;
     }
@@ -674,5 +689,30 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         String toReturn = db.getPath();
         db.close();
         return toReturn;
+    }
+
+    /**
+     *
+     * @param item
+     * @throws SQLException
+     * @return the row ID of the newly inserted row, or -1 if an error occurred
+     */
+    public long reportProduct(Item item, String recommender) throws SQLException {
+        SQLiteDatabase db = super.getWritableDatabase();
+
+        ContentValues v = new ContentValues();
+        v.put(PRODUCTS_RECOMMENDER, recommender);
+        v.put(PRODUCTS_NAME, item.getName());
+        v.put(PRODUCTS_PRICE, item.getPrice());
+        v.put(PRODUCTS_LOCLAT, item.getLocLat());
+        v.put(PRODUCTS_LOCLONG, item.getLocLong());
+        v.put(PRODUCTS_QUANTREM, item.getQuantRem());
+        v.put(PRODUCTS_STORE, item.getStore());
+
+
+        long toReturn = db.insertOrThrow(TABLE_PRODUCTS, null, v);
+        db.close();
+        return toReturn;
+
     }
 }

@@ -6,7 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -96,7 +95,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 + "PRIMARY KEY ( "
                 + FRIENDS_USER1 + ", "
                 + FRIENDS_USER2 + ", "
-                + FRIENDS_RATING+ ", "
+                + FRIENDS_RATING + ", "
                 + FRIENDS_ISREMOVED
                 + "));");
         db.execSQL("CREATE TABLE IF NOT EXISTS " + TABLE_PRODUCTS + " ("
@@ -170,9 +169,11 @@ public class DatabaseHandler extends SQLiteOpenHelper {
 
             long toReturn = db.insertOrThrow(TABLE_USERS, null, values);
             db.close();
+            cursor.close();
             return toReturn;
         } else {
             // else the record is already there
+            cursor.close();
             throw new UnsupportedOperationException("Username already exists");
         }
     }
@@ -436,8 +437,10 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                                 + " =? AND " + FRIENDS_ISREMOVED + " = '1'",
                         new String[]{currUser, friendToAdd});
                 db.close();
+                cursor1.close();
                 return toReturn;
             } else {
+                cursor1.close();
                 throw new UnsupportedOperationException(
                         "Already Added that friend");
             }
@@ -464,14 +467,18 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     /**
+     * Removes an item from from the global deals list
      *
-     * @param currUser
-     * @param item
-     * @return
+     * @param currUser the current users email
+     * @param item the item to remove
+     * @return the number of rows affected if a whereClause is passed in, 0
+     *         otherwise. To remove all rows and get a count pass "1" as the
+     *         whereClause.
      */
     public int removeItem(String currUser, Item item) {
         SQLiteDatabase db = super.getWritableDatabase();
-        int toReturn = db.delete(TABLE_PRODUCTS, PRODUCTS_NAME + " =? AND " + PRODUCTS_RECOMMENDEE + " =? ",
+        int toReturn = db.delete(TABLE_PRODUCTS, PRODUCTS_NAME
+                        + " =? AND " + PRODUCTS_RECOMMENDEE + " =? ",
                 new String[] {item.getName(), currUser});
         db.close();
         return toReturn;
@@ -692,12 +699,15 @@ public class DatabaseHandler extends SQLiteOpenHelper {
     }
 
     /**
+     * Report a product.
      *
-     * @param item
-     * @throws SQLException
+     * @param item the item to report
+     * @param recommender the current user recommending the product
      * @return the row ID of the newly inserted row, or -1 if an error occurred
+     * @throws SQLException the exception
      */
-    public long reportProduct(Item item, String recommender) throws SQLException {
+    public long reportProduct(Item item, String recommender)
+            throws SQLException {
         SQLiteDatabase db = super.getWritableDatabase();
 
         ContentValues v = new ContentValues();

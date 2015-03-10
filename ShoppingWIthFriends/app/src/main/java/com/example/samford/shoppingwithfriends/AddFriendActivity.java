@@ -3,7 +3,6 @@ package com.example.samford.shoppingwithfriends;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -94,7 +93,8 @@ public class AddFriendActivity extends ActionBarActivity {
 
                 if (!loginUser.getFriends().contains(friend)) {
                     //add person to the loginUser's friend list
-                    DatabaseHandler dbh = new DatabaseHandler(AddFriendActivity.this);
+                    DatabaseHandler dbh =
+                            new DatabaseHandler(AddFriendActivity.this);
                     dbh.addFriend(loginUser.getEmail(), friend.getEmail());
                     loginUser.setFriends(dbh.getFriends(loginUser.getEmail()));
 //                    loginUser.addFriend(friend);

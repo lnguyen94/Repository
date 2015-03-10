@@ -87,11 +87,11 @@ public class User {
      * Remove a friend from the user's friends
      *
      * @param friend the friend to remove
+     * @param context the context
      */
     public void addFriend(User friend, Context context) {
 
     }
-
 
     /**
      * Get the email

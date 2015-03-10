@@ -52,20 +52,25 @@ public class ItemListActivity extends ActionBarActivity {
         ListView dealsList = (ListView) findViewById(R.id.deals_list);
         List<Item> dealsItems = new ArrayList<>();
 
-        //need to get all items and filter out all the ones that are < the threshhold
+        // need to get all items and filter out
+        // all the ones that are < the threshhold
         List<Item> wishItems = loginUser.getWishList();
 
         DatabaseHandler dbh = new DatabaseHandler(this);
         for (Item item : wishItems) {
-            List<Item> a = dbh.findProductByCriteria(item.getName(), item.getPrice(), null, null, null);
+            List<Item> a = dbh.findProductByCriteria(
+                    item.getName(), item.getPrice(), null, null, null);
             Log.wtf("item", item.toString());
-//            List<Item> a = dbh.findProductByCriteria(null, null, null, null, null);
+//            List<Item> a =
+//                    dbh.findProductByCriteria(null, null, null, null, null);
             dealsItems.addAll(a);
         }
         Log.wtf("dealsItems", dealsItems.toString());
 
         dAdapter = new ArrayAdapter<Item>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, dealsItems);
+                android.R.layout.simple_list_item_1,
+                android.R.id.text1,
+                dealsItems);
 
         dealsList.setAdapter(dAdapter);
 
@@ -146,6 +151,12 @@ public class ItemListActivity extends ActionBarActivity {
     public void addItemClick(View v) {
         startActivity(new Intent(this, AddWishlistActivity.class));
     }
+
+    /**
+     * Goes to the report item page
+     *
+     * @param v The current view of the app
+     */
     public void reportItemClick(View v) {
         startActivity(new Intent(this, ReportItemActivity.class));
     }

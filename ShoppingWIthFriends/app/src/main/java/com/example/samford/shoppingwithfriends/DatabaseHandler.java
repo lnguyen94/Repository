@@ -202,7 +202,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
             cursor.close();
             returnUser = getBasicUserData(email);
             returnUser.setFriends(getFriends(returnUser.getEmail()));
-            returnUser.setItems(getItems(returnUser.getEmail()));
+            returnUser.setWishList(getItems(returnUser.getEmail()));
 
         } else {
             throw new SQLException("Credentials invalid or No user exists");

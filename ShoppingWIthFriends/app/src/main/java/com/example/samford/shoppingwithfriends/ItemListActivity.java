@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -48,12 +49,19 @@ public class ItemListActivity extends ActionBarActivity {
         final User loginUser = LoginActivity.getInstance().loginUser;
 
         ListView dealsList = (ListView) findViewById(R.id.deals_list);
+        List<Item> dealsItems = new ArrayList<>();
 
         //need to get all items and filter out all the ones that are < the threshhold
-        List<Item> items = loginUser.getWishList();
+        List<Item> wishItems = loginUser.getWishList();
+
+        DatabaseHandler dbh = new DatabaseHandler(this);
+        for (Item item : wishItems) {
+            List<Item> a = dbh.findProductByCriteria(item.getName(), item.getPrice(), null, null, null);
+            dealsItems.addAll(a);
+        }
 
         dAdapter = new ArrayAdapter<Item>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, items);
+                android.R.layout.simple_list_item_1, android.R.id.text1, dealsItems);
 
         dealsList.setAdapter(dAdapter);
 
@@ -72,10 +80,10 @@ public class ItemListActivity extends ActionBarActivity {
 
 
 
-        ListView wishlist = (ListView) findViewById(R.id.item_list);
-        List<Item> items2 = loginUser.getWishList();
+        ListView wishlist = (ListView) findViewById(R.id.wish_list);
+        List<Item> items = loginUser.getWishList();
         mAdapter = new ArrayAdapter<Item>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, items2);
+                android.R.layout.simple_list_item_1, android.R.id.text1, items);
 
         wishlist.setAdapter(mAdapter);
 
@@ -133,5 +141,8 @@ public class ItemListActivity extends ActionBarActivity {
      */
     public void addItemClick(View v) {
         startActivity(new Intent(this, AddWishlistActivity.class));
+    }
+    public void reportItemClick(View v) {
+        startActivity(new Intent(this, ReportItemActivity.class));
     }
 }

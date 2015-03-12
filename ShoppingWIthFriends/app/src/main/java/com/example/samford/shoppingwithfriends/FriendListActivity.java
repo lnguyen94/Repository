@@ -42,6 +42,15 @@ public class FriendListActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+    }
+
+    /**
+     * resumes
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
         setContentView(R.layout.activity_friend_list);
 
         final User loginUser = LoginActivity.getInstance().loginUser;
@@ -66,6 +75,7 @@ public class FriendListActivity extends ActionBarActivity {
             }
         });
     }
+
 
     /**
      * Initialize the contents of the Activity's standard options menu.

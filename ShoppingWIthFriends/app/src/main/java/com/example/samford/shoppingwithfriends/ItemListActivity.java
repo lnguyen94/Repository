@@ -59,11 +59,18 @@ public class ItemListActivity extends ActionBarActivity {
 
         DatabaseHandler dbh = new DatabaseHandler(this);
 
-        for (Item item : wishItems) {
-            List<Item> a = dbh.findProductByCriteria(
-                    item.getName(), item.getPrice(), null, null, null);
-            Log.wtf("item", item.toString());
-            dealsItems.addAll(a);
+        List<User> temp = loginUser.getFriends();
+        temp.add(loginUser); //able to see an item that you report yourself
+//        List<Item> a;
+        for (User u : temp) {
+            for (Item item : wishItems) {
+                List a = dbh.findProductByCriteria(
+                        item.getName(), item.getPrice(), null, null, null, u.getEmail());
+                Log.wtf("item", item.toString());
+                if(!dealsItems.contains(item)) {
+                    dealsItems.addAll(a);
+                }
+            }
         }
         Log.wtf("dealsItems", dealsItems.toString());
 

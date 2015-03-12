@@ -1,5 +1,6 @@
 package com.example.samford.shoppingwithfriends;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -57,15 +58,15 @@ public class ItemListActivity extends ActionBarActivity {
         List<Item> wishItems = loginUser.getWishList();
 
         DatabaseHandler dbh = new DatabaseHandler(this);
+
         for (Item item : wishItems) {
             List<Item> a = dbh.findProductByCriteria(
                     item.getName(), item.getPrice(), null, null, null);
             Log.wtf("item", item.toString());
-//            List<Item> a =
-//                    dbh.findProductByCriteria(null, null, null, null, null);
             dealsItems.addAll(a);
         }
         Log.wtf("dealsItems", dealsItems.toString());
+
 
         dAdapter = new ArrayAdapter<Item>(this,
                 android.R.layout.simple_list_item_1,
@@ -159,5 +160,18 @@ public class ItemListActivity extends ActionBarActivity {
      */
     public void reportItemClick(View v) {
         startActivity(new Intent(this, ReportItemActivity.class));
+    }
+
+    /**
+     * goes to welcome activity
+     * @param v The current view of the app
+     */
+    public void logoutClick(View v) {
+        Context context = getApplicationContext();
+        Intent intent = new Intent(context, WelcomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        context.startActivity(intent);
     }
 }

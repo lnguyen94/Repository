@@ -1,5 +1,6 @@
 package com.example.samford.shoppingwithfriends;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -87,5 +88,18 @@ public class ItemDetailActivity extends ActionBarActivity {
         dbh.removeItem(loginUser.getEmail(), selectedItem);
         loginUser.setWishList(dbh.getItems(loginUser.getEmail()));
         startActivity(new Intent(this, ItemListActivity.class));
+    }
+
+    /**
+     * goes to welcome activity
+     * @param v The current view of the app
+     */
+    public void logoutClick(View v) {
+        Context context = getApplicationContext();
+        Intent intent = new Intent(context, WelcomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        context.startActivity(intent);
     }
 }

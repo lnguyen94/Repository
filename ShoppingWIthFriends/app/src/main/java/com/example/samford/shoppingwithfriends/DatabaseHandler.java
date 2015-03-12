@@ -493,11 +493,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      * @param minQuantRem the minimum quantity there must be in stock
      * @param store the store where the item is located
      * @param maxEndDate the maximum date the user is willing to buy
+     * @param recommender the recommender of the product
      * @return the items that fit the criteria
      */
     public List<Item> findProductByCriteria(String name, Double maxPrice,
                                             Integer minQuantRem, String store,
-                                            Date maxEndDate) {
+                                            Date maxEndDate,
+                                            String recommender) {
         SQLiteDatabase db = super.getReadableDatabase();
         ArrayList<Item> returnList = new ArrayList<>();
         String query;
@@ -506,7 +508,7 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         StringBuilder sql = new StringBuilder("SELECT * FROM "
                 + TABLE_PRODUCTS);
         if (name == null && maxPrice == null && minQuantRem == null
-                && store == null && maxEndDate == null) {
+                && store == null && maxEndDate == null && recommender == null) {
             query = sql.toString();
         } else {
             sql.append(" WHERE ");
@@ -551,6 +553,14 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 SimpleDateFormat df = new SimpleDateFormat("MM-DD-YYYY");
                 String endDate = df.format(maxEndDate);
                 params.add(endDate);
+            }
+
+            if (recommender != null) {
+                if (sql.toString().contains("?")) {
+                    sql.append(" AND ");
+                }
+                sql.append(PRODUCTS_RECOMMENDER + " = ?");
+                params.add(recommender);
             }
 
             query = sql.toString();

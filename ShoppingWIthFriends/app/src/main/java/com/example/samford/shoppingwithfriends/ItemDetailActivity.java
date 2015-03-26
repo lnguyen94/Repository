@@ -102,4 +102,8 @@ public class ItemDetailActivity extends ActionBarActivity {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         context.startActivity(intent);
     }
+
+    public void showLocation(View v) {
+        startActivity(new Intent(this, MapActivity.class));
+    }
 }

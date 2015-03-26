@@ -39,9 +39,10 @@ public class MapActivity extends Activity implements OnMapReadyCallback {
                 // TODO Auto-generated method stub
                 loc = point;
                 map.addMarker(new MarkerOptions().position(point));
+                finish();
             }
         });
-        finish();
+        //finish();
 
 //        LatLng sydney = new LatLng(-33.867, 151.206);
 //

@@ -78,6 +78,8 @@ public class ReportItemActivity extends ActionBarActivity {
      * @param v the current view of the app
      */
     public void addItem(View v) {
+        lat = MapActivity.loc.latitude;
+        lng = MapActivity.loc.longitude;
         String name = mName.getText().toString();
 
         // parse the int
@@ -103,7 +105,5 @@ public class ReportItemActivity extends ActionBarActivity {
     public void addLocation(View v) {
         startActivity(new Intent(this, MapActivity.class));
         //get loc from mapactivity
-        lat = MapActivity.loc.latitude;
-        lng = MapActivity.loc.longitude;
     }
 }

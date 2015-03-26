@@ -39,7 +39,7 @@ public class ShowMapActivity extends Activity implements OnMapReadyCallback {
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(loc, 13));
 //
         map.addMarker(new MarkerOptions()
-                .title("Item")
+                .title(selectedItem.getName())
                 .snippet("Location")
                 .position(loc));
     }

@@ -104,6 +104,6 @@ public class ItemDetailActivity extends ActionBarActivity {
     }
 
     public void showLocation(View v) {
-        startActivity(new Intent(this, MapActivity.class));
+        startActivity(new Intent(this, ShowMapActivity.class));
     }
 }

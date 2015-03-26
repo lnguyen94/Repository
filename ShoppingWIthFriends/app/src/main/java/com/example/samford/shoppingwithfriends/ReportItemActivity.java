@@ -20,6 +20,8 @@ public class ReportItemActivity extends ActionBarActivity {
     private EditText mName;
     private EditText mPrice;
     private EditText mMaxDist;
+    private double lat;
+    private double lng;
 
     /**
      * Creates the addItemActivity
@@ -85,6 +87,8 @@ public class ReportItemActivity extends ActionBarActivity {
         User loginUser = LoginActivity.getInstance().loginUser;
         Item item = new Item(name, price);
         item.setMaxDistance(maxDist);
+        item.setLocLat(lat);
+        item.setLocLong(lng);
         DatabaseHandler dbh = new DatabaseHandler(this);
         try {
             dbh.reportProduct(item, loginUser.getEmail());
@@ -94,5 +98,12 @@ public class ReportItemActivity extends ActionBarActivity {
 //        loginUser.setWishList(dbh.getItems(loginUser.getEmail()));
 //        loginUser.addItem(item);
         startActivity(new Intent(this, ItemListActivity.class));
+    }
+
+    public void addLocation(View v) {
+        startActivity(new Intent(this, MapActivity.class));
+        //get loc from mapactivity
+        lat = MapActivity.loc.latitude;
+        lng = MapActivity.loc.longitude;
     }
 }

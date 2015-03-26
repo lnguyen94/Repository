@@ -13,10 +13,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+
 public class MapActivity extends Activity implements OnMapReadyCallback {
-    static final LatLng HAMBURG = new LatLng(53.558, 9.927);
-    static final LatLng KIEL = new LatLng(53.551, 9.993);
     //private GoogleMap map;
+    public static LatLng loc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,16 +30,28 @@ public class MapActivity extends Activity implements OnMapReadyCallback {
     }
 
     @Override
-    public void onMapReady(GoogleMap map) {
-        LatLng sydney = new LatLng(-33.867, 151.206);
+    public void onMapReady(final GoogleMap map) {
 
-        map.setMyLocationEnabled(true);
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13));
+        map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
 
-        map.addMarker(new MarkerOptions()
-                .title("Sydney")
-                .snippet("The most populous city in Australia.")
-                .position(sydney));
+            @Override
+            public void onMapClick(LatLng point) {
+                // TODO Auto-generated method stub
+                loc = point;
+                map.addMarker(new MarkerOptions().position(point));
+            }
+        });
+        finish();
+
+//        LatLng sydney = new LatLng(-33.867, 151.206);
+//
+//        map.setMyLocationEnabled(true);
+//        map.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13));
+//
+//        map.addMarker(new MarkerOptions()
+//                .title("Sydney")
+//                .snippet("The most populous city in Australia.")
+//                .position(sydney));
     }
 
     @Override

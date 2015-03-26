@@ -24,8 +24,8 @@ public class WelcomeActivity extends ActionBarActivity {
      */
     public void loginClick(View v) {
 
-//        startActivity(new Intent(this, LoginActivity.class));
-        startActivity(new Intent(this, MapActivity.class));
+        startActivity(new Intent(this, LoginActivity.class));
+//        startActivity(new Intent(this, MapActivity.class));
     }
 
     /**

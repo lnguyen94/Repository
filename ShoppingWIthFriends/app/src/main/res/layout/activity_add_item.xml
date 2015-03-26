@@ -54,16 +54,6 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Add Location"
-        android:id="@+id/add_location_button"
-        android:layout_below="@+id/max_dist"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true"
-        android:onClick="addLocation"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:text="Add Item"
         android:id="@+id/add_item_button"
         android:layout_centerVertical="true"

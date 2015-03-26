@@ -33,7 +33,7 @@ public class ItemDetailActivity extends ActionBarActivity {
         TextView price = (TextView) findViewById(R.id.price);
         price.setText("Price: " + item.getPrice());
         TextView distance = (TextView) findViewById(R.id.distance);
-        distance.setText("Distance: " + item.getMaxDistance());
+        //distance.setText("Distance: " + item.getMaxDistance());
 
     }
 

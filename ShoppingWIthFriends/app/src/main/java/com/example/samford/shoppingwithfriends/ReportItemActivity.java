@@ -31,7 +31,7 @@ public class ReportItemActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_item);
+        setContentView(R.layout.activity_report_item);
         mName = (EditText) findViewById(R.id.name);
         mPrice = (EditText) findViewById(R.id.price);
         mMaxDist = (EditText) findViewById(R.id.max_dist);
@@ -78,8 +78,8 @@ public class ReportItemActivity extends ActionBarActivity {
      * @param v the current view of the app
      */
     public void addItem(View v) {
-        lat = MapActivity.loc.latitude;
-        lng = MapActivity.loc.longitude;
+        lat = MapActivity.getLoc().latitude;
+        lng = MapActivity.getLoc().longitude;
         String name = mName.getText().toString();
 
         // parse the int
@@ -102,6 +102,10 @@ public class ReportItemActivity extends ActionBarActivity {
         startActivity(new Intent(this, ItemListActivity.class));
     }
 
+    /**
+     * Adds the location
+     * @param v the view of the button
+     */
     public void addLocation(View v) {
         startActivity(new Intent(this, MapActivity.class));
         //get loc from mapactivity

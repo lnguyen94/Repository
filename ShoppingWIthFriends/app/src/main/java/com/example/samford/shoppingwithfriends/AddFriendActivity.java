@@ -149,6 +149,6 @@ public class AddFriendActivity extends ActionBarActivity {
      * @param v the current view of the app
      */
     public void cancelClick(View v) {
-        finish();
+        startActivity(new Intent(this, FriendListActivity.class));
     }
 }

@@ -1,7 +1,5 @@
 package com.example.samford.shoppingwithfriends;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -21,6 +19,9 @@ import java.sql.SQLException;
 public class ReportItemActivity extends ActionBarActivity {
     private EditText mName;
     private EditText mPrice;
+    private EditText mMaxDist;
+    private double lat;
+    private double lng;
 
     /**
      * Creates the addItemActivity
@@ -33,6 +34,7 @@ public class ReportItemActivity extends ActionBarActivity {
         setContentView(R.layout.activity_report_item);
         mName = (EditText) findViewById(R.id.name);
         mPrice = (EditText) findViewById(R.id.price);
+        mMaxDist = (EditText) findViewById(R.id.max_dist);
     }
 
     /**
@@ -76,38 +78,17 @@ public class ReportItemActivity extends ActionBarActivity {
      * @param v the current view of the app
      */
     public void addItem(View v) {
-        if (mPrice.getText().toString().trim().isEmpty()
-                || mName.getText().toString().trim().isEmpty()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("All fields must be populated")
-                    .setCancelable(false)
-                    .setPositiveButton(
-                            "OK", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog,
-                                                    int id) {
-                                }
-                            });
-            AlertDialog alert = builder.create();
-            alert.show();
-            return;
-        }
-        double lat;
-        double lng;
-        if (MapActivity.getLoc() != null) {
-            lat = MapActivity.getLoc().latitude;
-            lng = MapActivity.getLoc().longitude;
-        } else {
-            lat = 33.777512;
-            lng = -84.397211;
-        }
-
+        lat = MapActivity.getLoc().latitude;
+        lng = MapActivity.getLoc().longitude;
         String name = mName.getText().toString();
 
         // parse the int
         double price = Double.parseDouble(mPrice.getText().toString());
+        int maxDist = Integer.parseInt(mMaxDist.getText().toString());
 //        Item item = new Item(name, price);
         User loginUser = LoginActivity.getInstance().loginUser;
         Item item = new Item(name, price);
+        item.setMaxDistance(maxDist);
         item.setLocLat(lat);
         item.setLocLong(lng);
         DatabaseHandler dbh = new DatabaseHandler(this);
@@ -117,7 +98,8 @@ public class ReportItemActivity extends ActionBarActivity {
             e.printStackTrace();
         }
 //        loginUser.setWishList(dbh.getItems(loginUser.getEmail()));
-        finish();
+//        loginUser.addItem(item);
+        startActivity(new Intent(this, ItemListActivity.class));
     }
 
     /**
@@ -126,5 +108,6 @@ public class ReportItemActivity extends ActionBarActivity {
      */
     public void addLocation(View v) {
         startActivity(new Intent(this, MapActivity.class));
+        //get loc from mapactivity
     }
 }

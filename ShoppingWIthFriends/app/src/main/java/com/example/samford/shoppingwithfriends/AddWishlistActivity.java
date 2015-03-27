@@ -1,9 +1,9 @@
 package com.example.samford.shoppingwithfriends;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.os.Bundle;
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
+import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -19,7 +19,6 @@ public class AddWishlistActivity extends ActionBarActivity {
     private EditText mName;
     private EditText mPrice;
     private EditText mMaxDist;
-    private EditText mMinQuantity;
 
     /**
      * Creates the addItemActivity
@@ -33,7 +32,6 @@ public class AddWishlistActivity extends ActionBarActivity {
         mName = (EditText) findViewById(R.id.name);
         mPrice = (EditText) findViewById(R.id.price);
         mMaxDist = (EditText) findViewById(R.id.max_dist);
-        mMinQuantity = (EditText) findViewById(R.id.min_quantity_rem);
     }
 
     /**
@@ -78,37 +76,31 @@ public class AddWishlistActivity extends ActionBarActivity {
      * @param v the current view of the app
      */
     public void addItem(View v) {
-        if (
-                mPrice.getText().toString().trim().isEmpty()
-                || mName.getText().toString().trim().isEmpty()
-                || mMaxDist.getText().toString().trim().isEmpty()
-                || mMinQuantity.getText().toString().trim().isEmpty()) {
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("All fields must be populated")
-                    .setCancelable(false)
-                    .setPositiveButton(
-                            "OK", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog,
-                                                    int id) {
-                                }
-                            });
-            AlertDialog alert = builder.create();
-            alert.show();
-            return;
-        }
-
-        // Build Item data
         String name = mName.getText().toString();
+
+        // parse the int
         double price = Double.parseDouble(mPrice.getText().toString());
         int maxDist = Integer.parseInt(mMaxDist.getText().toString());
-        int minQuantityRem =
-                Integer.parseInt(mMinQuantity.getText().toString());
+//        Item item = new Item(name, price);
         User loginUser = LoginActivity.getInstance().loginUser;
 
-        // Store in the database
         DatabaseHandler dbh = new DatabaseHandler(this);
         dbh.addToWishlist(loginUser.getEmail(), name, price, maxDist, 0);
         loginUser.setWishList(dbh.getItems(loginUser.getEmail()));
-        finish();
+//        loginUser.addItem(item);
+        startActivity(new Intent(this, ItemListActivity.class));
+    }
+
+    /**
+     * goes to welcome activity
+     * @param v The current view of the app
+     */
+    public void logoutClick(View v) {
+        Context context = getApplicationContext();
+        Intent intent = new Intent(context, WelcomeActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        context.startActivity(intent);
     }
 }

@@ -17,7 +17,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:textSize="50dp" />
+        android:textSize="50sp" />
 
     <EditText
         android:layout_width="match_parent"
@@ -35,20 +35,9 @@
         android:inputType="numberDecimal"
         android:ems="10"
         android:id="@+id/price"
-        android:hint="Max Price"
+        android:hint="Price"
         android:layout_gravity="center_horizontal"
         android:layout_below="@+id/name"
-        android:layout_alignParentStart="true" />
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="number"
-        android:ems="10"
-        android:id="@+id/max_dist"
-        android:hint="Max Distance"
-        android:layout_gravity="center_horizontal"
-        android:layout_below="@+id/price"
         android:layout_alignParentStart="true" />
 
     <Button
@@ -56,7 +45,7 @@
         android:layout_height="wrap_content"
         android:text="Add Location"
         android:id="@+id/add_location_button"
-        android:layout_below="@+id/max_dist"
+        android:layout_below="@+id/price"
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"
         android:onClick="addLocation"/>
@@ -71,17 +60,5 @@
         android:layout_alignEnd="@+id/price"
         android:layout_alignParentStart="true"
         android:onClick="addItem" />
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Logout"
-        android:id="@+id/button2"
-        android:layout_below="@+id/add_item_button"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true"
-        android:onClick="logoutClick"/>
-
-
 
 </RelativeLayout>

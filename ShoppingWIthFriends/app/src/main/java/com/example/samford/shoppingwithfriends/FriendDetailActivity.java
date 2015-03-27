@@ -83,7 +83,6 @@ public class FriendDetailActivity extends ActionBarActivity {
         DatabaseHandler dbh = new DatabaseHandler(this);
         dbh.removeFriend(loginUser.getEmail(), friend.getEmail());
         loginUser.setFriends(dbh.getFriends(loginUser.getEmail()));
-        startActivity(new Intent(this, FriendListActivity.class));
         finish();
     }
 }

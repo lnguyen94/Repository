@@ -32,9 +32,8 @@ public class ItemDetailActivity extends ActionBarActivity {
         name.setText("Name: " + item.getName());
         TextView price = (TextView) findViewById(R.id.price);
         price.setText("Price: " + item.getPrice());
-        TextView distance = (TextView) findViewById(R.id.distance);
+        //TextView distance = (TextView) findViewById(R.id.distance);
         //distance.setText("Distance: " + item.getMaxDistance());
-
     }
 
     /**
@@ -80,29 +79,15 @@ public class ItemDetailActivity extends ActionBarActivity {
         Item selectedItem = ItemListActivity.getInstance().selectedItem;
         User loginUser = LoginActivity.getInstance().loginUser;
         DatabaseHandler dbh = new DatabaseHandler(this);
-//        //
-//        //need dbh method to remove item
-//        //
-
-
         dbh.removeItem(loginUser.getEmail(), selectedItem);
         loginUser.setWishList(dbh.getItems(loginUser.getEmail()));
-        startActivity(new Intent(this, ItemListActivity.class));
+        finish();
     }
 
     /**
-     * goes to welcome activity
-     * @param v The current view of the app
+     * Start the Map Activity
+     * @param v the view of the button
      */
-    public void logoutClick(View v) {
-        Context context = getApplicationContext();
-        Intent intent = new Intent(context, WelcomeActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        context.startActivity(intent);
-    }
-
     public void showLocation(View v) {
         startActivity(new Intent(this, ShowMapActivity.class));
     }

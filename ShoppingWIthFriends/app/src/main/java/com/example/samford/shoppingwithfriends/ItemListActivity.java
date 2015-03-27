@@ -46,6 +46,14 @@ public class ItemListActivity extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    /**
+     * Resumes the Activity
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
         setContentView(R.layout.activity_item_list);
 
         final User loginUser = LoginActivity.getInstance().loginUser;
@@ -54,7 +62,7 @@ public class ItemListActivity extends ActionBarActivity {
         List<Item> dealsItems = new ArrayList<>();
 
         // need to get all items and filter out
-        // all the ones that are < the threshhold
+        // all the ones that are < the threshold
         List<Item> wishItems = loginUser.getWishList();
 
         DatabaseHandler dbh = new DatabaseHandler(this);
@@ -67,13 +75,12 @@ public class ItemListActivity extends ActionBarActivity {
                 List a = dbh.findProductByCriteria(
                         item.getName(), item.getPrice(), null, null, null, u.getEmail());
                 Log.wtf("item", item.toString());
-                if(!dealsItems.contains(item)) {
+                if (!dealsItems.contains(item)) {
                     dealsItems.addAll(a);
                 }
             }
         }
         Log.wtf("dealsItems", dealsItems.toString());
-
 
         dAdapter = new ArrayAdapter<Item>(this,
                 android.R.layout.simple_list_item_1,
@@ -92,10 +99,6 @@ public class ItemListActivity extends ActionBarActivity {
                         ItemDetailActivity.class));
             }
         });
-
-
-
-
 
         ListView wishlist = (ListView) findViewById(R.id.wish_list);
         List<Item> items = loginUser.getWishList();
@@ -167,18 +170,5 @@ public class ItemListActivity extends ActionBarActivity {
      */
     public void reportItemClick(View v) {
         startActivity(new Intent(this, ReportItemActivity.class));
-    }
-
-    /**
-     * goes to welcome activity
-     * @param v The current view of the app
-     */
-    public void logoutClick(View v) {
-        Context context = getApplicationContext();
-        Intent intent = new Intent(context, WelcomeActivity.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        context.startActivity(intent);
     }
 }

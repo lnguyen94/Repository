@@ -9,9 +9,9 @@ import android.widget.EditText;
 import com.robotium.solo.Solo;
 
 /**
- * Test class to for reporting an item
+ * Test class for a list of items
  *
- * @author Elliott
+ * @author Mika
  * @version 1.0
  */
 public class ItemListActivityTest extends ActivityInstrumentationTestCase2<ItemListActivity>  {
@@ -51,7 +51,7 @@ public class ItemListActivityTest extends ActivityInstrumentationTestCase2<ItemL
 
 
     /**
-     * Tests adding a valid friend
+     * Tests opening list of items
      */
     @LargeTest
     public void testItemList() {

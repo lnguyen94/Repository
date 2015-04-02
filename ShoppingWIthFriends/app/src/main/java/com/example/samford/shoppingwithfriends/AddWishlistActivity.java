@@ -105,9 +105,14 @@ public class AddWishlistActivity extends ActionBarActivity {
                 Integer.parseInt(mMinQuantity.getText().toString());
         User loginUser = LoginActivity.getInstance().loginUser;
 
+        if(loginUser.getEmail() == null) {
+            DatabaseHandler dbh = new DatabaseHandler(this);
+            dbh.addToWishlist("test", name, price, maxDist, minQuantityRem);
+        }
+
         // Store in the database
         DatabaseHandler dbh = new DatabaseHandler(this);
-        dbh.addToWishlist(loginUser.getEmail(), name, price, maxDist, 0);
+        dbh.addToWishlist(loginUser.getEmail(), name, price, maxDist, minQuantityRem);
         loginUser.setWishList(dbh.getItems(loginUser.getEmail()));
         finish();
     }

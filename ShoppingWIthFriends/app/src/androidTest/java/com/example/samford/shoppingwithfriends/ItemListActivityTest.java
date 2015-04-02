@@ -57,8 +57,13 @@ public class ItemListActivityTest extends ActivityInstrumentationTestCase2<ItemL
     public void testItemList() {
         getInstrumentation().waitForIdleSync();
         setActivityInitialTouchMode(true);
-        solo.clickInList(0);
-        solo.sleep(15000); // Wait 15 seconds
+        ListView list = solo.getCurrentListViews().get(0);
+        for(int i = 0; i < list.getAdapter().getCount(); i++){
+            solo.clickOnView(getViewAtIndex(list, i, getInstrumentation()))
+            //solo.assertCurrentActivity("Json Class", JsonActivity.class);
+            solo.goBack();
+        }
         // Activity should silently finish;
     }
+
 }

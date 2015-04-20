@@ -25,6 +25,7 @@ public class WelcomeActivity extends ActionBarActivity {
     public void loginClick(View v) {
 
         startActivity(new Intent(this, LoginActivity.class));
+        //overridePendingTransition(R.anim.hold, R.anim.fade_in);
     }
 
     /**
@@ -34,6 +35,7 @@ public class WelcomeActivity extends ActionBarActivity {
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
         if (savedInstanceState == null) {

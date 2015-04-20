@@ -1,9 +1,8 @@
 package com.example.samford.shoppingwithfriends;
 
-import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -82,7 +81,7 @@ public class ItemListActivity extends ActionBarActivity {
         }
         Log.wtf("dealsItems", dealsItems.toString());
 
-        dAdapter = new ArrayAdapter<Item>(this,
+        dAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1,
                 android.R.id.text1,
                 dealsItems);
@@ -102,7 +101,7 @@ public class ItemListActivity extends ActionBarActivity {
 
         ListView wishlist = (ListView) findViewById(R.id.wish_list);
         List<Item> items = loginUser.getWishList();
-        mAdapter = new ArrayAdapter<Item>(this,
+        mAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, android.R.id.text1, items);
 
         wishlist.setAdapter(mAdapter);

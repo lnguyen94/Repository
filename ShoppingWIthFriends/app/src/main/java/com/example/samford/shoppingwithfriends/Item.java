@@ -23,8 +23,6 @@ public class Item {
     private double maxDistance;
     private int minQuantRem;
     private Date saleEndDate;
-    public NumberFormat currencyFormat =
-            NumberFormat.getCurrencyInstance(Locale.US);
 
     /**
      * Create a user with a name and a price

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -232,7 +233,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
         returnUser.setNumOfRatings(userCursor.getInt(4));
         returnUser.setLastLocLat(userCursor.getDouble(5));
         returnUser.setLastLocLong(userCursor.getDouble(6));
-        returnUser.setPriceThresh(userCursor.getDouble(7));
         userCursor.close();
         db.close();
         return returnUser;
@@ -264,7 +264,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 friend.setNumOfRatings(friendCursor.getInt(4));
                 friend.setLastLocLat(friendCursor.getInt(5));
                 friend.setLastLocLong(friendCursor.getInt(6));
-                friend.setPriceThresh(friendCursor.getDouble(7));
                 returnList.add(friend);
             } while (friendCursor.moveToNext());
         }
@@ -496,14 +495,13 @@ public class DatabaseHandler extends SQLiteOpenHelper {
      * @param recommender the recommender of the product
      * @return the items that fit the criteria
      */
-    public List<Item> findProductByCriteria(String name, Double maxPrice,
+    public ArrayList<Item> findProductByCriteria(String name, Double maxPrice,
                                             Integer minQuantRem, String store,
                                             Date maxEndDate,
                                             String recommender) {
         SQLiteDatabase db = super.getReadableDatabase();
         ArrayList<Item> returnList = new ArrayList<>();
         String query;
-        int multAND = 0;
         ArrayList<String> params = new ArrayList<>();
         StringBuilder sql = new StringBuilder("SELECT * FROM "
                 + TABLE_PRODUCTS);
@@ -633,7 +631,6 @@ public class DatabaseHandler extends SQLiteOpenHelper {
                 user.setNumOfRatings(c.getInt(4));
                 user.setLastLocLat(c.getDouble(5));
                 user.setLastLocLong(c.getDouble(6));
-                user.setPriceThresh(c.getDouble(7));
                 returnList.add(user);
             } while (c.moveToNext());
         }

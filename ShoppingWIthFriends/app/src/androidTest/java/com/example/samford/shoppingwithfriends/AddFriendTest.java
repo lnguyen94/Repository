@@ -2,16 +2,14 @@ package com.example.samford.shoppingwithfriends;
 
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.LargeTest;
-import android.test.suitebuilder.annotation.MediumTest;
 import android.test.suitebuilder.annotation.SmallTest;
-import android.widget.EditText;
 
 import com.robotium.solo.Solo;
 
 /**
  * Test class to for adding a friend
  *
- * @author Elliott
+ * @author Shree
  * @version 1.0
  */
 public class AddFriendTest extends ActivityInstrumentationTestCase2<AddFriendActivity>  {
@@ -50,7 +48,6 @@ public class AddFriendTest extends ActivityInstrumentationTestCase2<AddFriendAct
         assertNotNull("activity should be launched successfully", activity);
         solo.assertCurrentActivity("wrong activity", AddFriendActivity.class);
     }
-
 
     /**
      * Tests adding a valid friend

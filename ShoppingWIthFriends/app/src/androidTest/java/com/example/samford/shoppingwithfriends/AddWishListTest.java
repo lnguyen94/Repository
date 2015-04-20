@@ -2,7 +2,6 @@ package com.example.samford.shoppingwithfriends;
 
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.suitebuilder.annotation.LargeTest;
-import android.test.suitebuilder.annotation.MediumTest;
 import android.test.suitebuilder.annotation.SmallTest;
 import android.widget.EditText;
 
@@ -11,7 +10,7 @@ import com.robotium.solo.Solo;
 /**
  * Test class to for reporting an item
  *
- * @author Elliott
+ * @author Sam
  * @version 1.0
  */
 public class AddWishListTest extends ActivityInstrumentationTestCase2<AddWishlistActivity>  {

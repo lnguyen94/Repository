@@ -1,7 +1,5 @@
 package com.example.samford.shoppingwithfriends;
 
-import android.content.Context;
-
 import java.util.ArrayList;
 
 /**
@@ -20,10 +18,8 @@ public class User {
     private int numOfRatings;
     private double lastLocLat;
     private double lastLocLong;
-    private double priceThresh;
     private ArrayList<User> friends = new ArrayList<>();
     private ArrayList<Item> wishList = new ArrayList<>();
-    private ArrayList<Item> reportedItems = new ArrayList<>();
 
     /**
      * Create an empty user
@@ -53,44 +49,6 @@ public class User {
         this.numOfRatings = 0;
         this.lastLocLat = 0;
         this.lastLocLong = 0;
-        this.priceThresh = 0;
-    }
-
-    /**
-     * Adds an item to their item list
-     *
-     * @param item the item to be added
-     */
-    public void addWish(Item item) {
-        this.wishList.add(item);
-    }
-
-    /**
-     * Remove the item from the user's items
-     *
-     * @param item the item to remove
-     */
-    public void removeWish(Item item) {
-        this.wishList.remove(item);
-    }
-
-    /**
-     * Remove a friend from the user's friends
-     *
-     * @param friend the friend to remove
-     */
-    public void removeFriend(User friend) {
-        this.friends.remove(friend);
-    }
-
-    /**
-     * Remove a friend from the user's friends
-     *
-     * @param friend the friend to remove
-     * @param context the context
-     */
-    public void addFriend(User friend, Context context) {
-
     }
 
     /**
@@ -136,15 +94,6 @@ public class User {
      */
     public String getPassword() {
         return password;
-    }
-
-    /**
-     * Set the password of the user
-     *
-     * @param password the new password
-     */
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     /**
@@ -253,24 +202,6 @@ public class User {
      */
     public void setWishList(ArrayList<Item> items) {
         this.wishList = items;
-    }
-
-    /**
-     * Gets the price threshold of the user
-     *
-     * @return the price threshold of the user
-     */
-    public double getPriceThresh() {
-        return priceThresh;
-    }
-
-    /**
-     * Sets the price threshold of the user
-     *
-     * @param priceThresh the price threshold of the user
-     */
-    public void setPriceThresh(double priceThresh) {
-        this.priceThresh = priceThresh;
     }
 
     /**

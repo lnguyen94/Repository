@@ -1,8 +1,7 @@
 package com.example.samford.shoppingwithfriends;
 
-import android.content.Intent;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -52,7 +52,7 @@ public class AddFriendActivity extends ActionBarActivity {
 
 
         if (loginUser.getFriends() == null) {
-            List<User> temp = loginUser.getFriends();
+            ArrayList<User> temp = loginUser.getFriends();
             for (User u : temp) {
                 friendEmails.add(u.getEmail());
             }
@@ -81,13 +81,6 @@ public class AddFriendActivity extends ActionBarActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-//                Log.wtf("asdf", "onCLick");
-//                for (User u : loginUser.friends) {
-//                    Log.wtf("asdf", u.toString());
-//                }
-//                Log.wtf("post", "chicken");
-//                final String item =
-//                        (String) parent.getItemAtPosition(position);
 
                 User friend = (User) parent.getItemAtPosition(position);
 
